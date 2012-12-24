@@ -1,0 +1,12 @@
+*.swp
+*.swo
+*.pyc
+*~
+*.log
+*.rdb
+
+node_modules
+build
+pip-log.txt
+nohup.out
+.DS_Store

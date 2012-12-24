@@ -1,0 +1,9 @@
+# Simple proof of concept gnuplot for 3d galaxy viz
+# http://www.gnuplot.info/demo/scatter.html
+# http://sparky.rice.edu/gnuplot.html
+#
+set terminal png
+set output 'scatter.png'
+set style data points
+set pointsize 0.0001
+splot "xyz.csv" pt 6 with points
