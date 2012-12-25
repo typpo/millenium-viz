@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<title>1,000,000 Galaxies</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link  href="main.css" rel="stylesheet"/>
+	</head>
+<body>
+  <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
+
+  <div id="sidebar">
+    <p>
+    <a href="/">&laquo; Main site</a>
+    </p>
+</div>
+
+    <hr/>
+      <table id="objects-of-interest">
+        <tr id="sun-selector" data-full-name="sun" style="background-color:green;">
+          <td colspan="2"><a href="#">Sun</a> (default view)</td>
+        </tr>
+        <tr id="earth-selector" data-full-name="earth">
+          <td colspan="2"><a href="#">Earth</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+	<!-- three.js container -->
+  <div id="container"></div>
+	<!-- info on screen display -->
+  <div id="loading">
+    <img src="/images/loader.gif"/> Loading <span id="loading-text"></span>...
+  </div>
+  <div id="not-supported" style="display:none;">
+    <p>
+    <strong>Sorry, your browser or graphics card doesn't support webgl.  Most features of the simulation will not be available.</strong>
+    </p>
+    <p>
+    You may be able to see the simulation if you..
+    </p>
+    <h2><a href="http://google.com/chrome">Get Chrome</a><br>or<br><a href="http://getfirefox.com">Get Firefox</a></h2>
+    <p>
+    <input type="submit" onClick="$('#not-supported').hide();return false;" value="Ignore for now"/>
+    </p>
+  </div>
+	<div id="info">
+    <div id="caption-container">
+      <div id="main-caption" class="top">
+      </div>
+      <div id="other-caption" class="top">
+      </div>
+    </div>
+		<div class="bottom" id="inlineDoc" >
+      <span style="font-size:12px;color:#fff">
+      <strong>Rotate</strong>: left click + drag; <strong>Pan</strong>: right click + drag
+      <br>
+      <strong>Zoom</strong>: scroll/middle click + drag; <strong>Fullscreen</strong>: press f
+      <br>
+      The location of all objects shown is scientifically accurate.</span>
+		</div>
+	</div>
+  <script src="vendor/vendor.min.js"></script>
+  <script src="vendor/three.js/Stats.js"></script>
+  <!--<script src="../js/lib/jquery.min.js"></script>-->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
