@@ -4,6 +4,10 @@
 import csv
 import sys
 
+if len(sys.argv) < 2:
+  print 'usage: parse data.csv [json] [# galaxies]'
+  sys.exit(1)
+
 json = len(sys.argv) > 2 and sys.argv[2] == 'json'
 n = -1
 if len(sys.argv) > 3:
@@ -20,7 +24,8 @@ with open(sys.argv[1], 'r') as datafile:
     if json:
       if not first:
         print ',',
-      print '[%s, %s, %s]' % (row['x'], row['y'], row['z'])
+      print '[%s, %s, %s, %s, %s]' \
+          % (row['x'], row['y'], row['z'], row['diskRadius'], row['sfr'])
     else:
       print '%s %s %s' % (row['x'], row['y'], row['z'])
     first = False

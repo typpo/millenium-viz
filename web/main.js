@@ -21,8 +21,6 @@ $(function() {
   var camera_fly_around = true;
   var object_movement_on = true;
 
-  init();
-
   function init(){
     $('#loading-text').html('renderer');
     if (WEB_GL_ENABLED && Detector.webgl){
@@ -136,14 +134,13 @@ $(function() {
         );
         particles.vertices.push(particle);
       });
-      console.log(particles.vertices);
 
       var particle_system = new THREE.ParticleSystem(particles,
                                                      particle_material);
       scene.add(particle_system);
+
       $('#loading').hide();
     });
-
   }
 
   // animation loop
@@ -161,6 +158,8 @@ $(function() {
     // actually render the scene
     renderer.render(scene, camera);
   }
+
+  init();
 });
 
 if (!window.console) window.console = {log: function() {}};

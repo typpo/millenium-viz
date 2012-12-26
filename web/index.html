@@ -9,6 +9,31 @@
 <body>
   <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
 
+<script type="x-vertex-shader" id="vertex-shader">
+  attribute float brightness;
+  attribute float size;
+
+  varying float vBrightness;
+
+  void main() {
+    vBrightness = brightness;
+
+    gl_PointSize = size;
+  }
+
+</script>
+
+<script type="x-fragment-shader" id="fragment-shader">
+  varying float vBrightness;
+  uniform texture2D map;
+
+  void main() {
+    //gl_FragColor =
+
+  }
+
+</script>
+
   <div id="sidebar">
     <p>
     <a href="/">&laquo; Main site</a>
