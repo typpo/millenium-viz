@@ -21,6 +21,8 @@ $(function() {
   var camera_fly_around = true;
   var object_movement_on = true;
 
+  var uniforms, attributes;
+
   function init(){
     $('#loading-text').html('renderer');
     if (WEB_GL_ENABLED && Detector.webgl){
@@ -118,6 +120,17 @@ $(function() {
   function load() {
     $.getJSON('../data/partial.json', function(data) {
       var particles = new THREE.Geometry();
+
+      attributes = {
+        brightness: {type: 'f', value: []},
+        size: {type: 'f', value: []},
+        pos: { type: "v3", value: []}
+      };
+      uniforms = {
+        map: { type: "t", value: THREE.ImageUtils.loadTexture("/images/cloud4.png") },
+      };
+
+/*
       var particle_material = new THREE.ParticleBasicMaterial({
         color: 0xffffff,
         size: 5,
@@ -126,14 +139,33 @@ $(function() {
         transparent: true,
         depthWrite: false
       });
+*/
       $.each(data.positions, function(idx) {
-        var particle = new THREE.Vector3(
-          this[0] * 20,
-          this[1] * 20,
-          this[2] * 20
-        );
-        particles.vertices.push(particle);
+        var x = this[0] * 20
+          , y = this[1] * 20
+          , z = this[2] * 20
+          ;
+        var pos = new THREE.Vector3(x,y,z);
+        attributes.pos.value[idx] = pos;
+        attributes.size.value[idx] = this[3];
+        attributes.brightness.value[idx] = this[4];
+        particles.vertices.push(pos);
       });
+
+
+      console.log(particles.vertices.length);
+      console.log(attributes.size.value.length);
+
+      var particle_material = new THREE.ShaderMaterial( {
+        uniforms:       uniforms,
+        attributes:     attributes,
+        vertexShader: document.getElementById( 'vertex-shader' ).textContent,
+        fragmentShader: document.getElementById( 'fragment-shader' ).textContent
+      });
+      particle_material.depthTest = false;
+      particle_material.vertexColor = true;
+      particle_material.transparent = true;
+      particle_material.blending = THREE.AdditiveBlending;
 
       var particle_system = new THREE.ParticleSystem(particles,
                                                      particle_material);

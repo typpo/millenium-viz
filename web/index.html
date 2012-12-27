@@ -12,23 +12,31 @@
 <script type="x-vertex-shader" id="vertex-shader">
   attribute float brightness;
   attribute float size;
+  attribute vec3 pos;
+  /*
+  attribute float x;
+  attribute float y;
+  attribute float z;
+  */
 
-  varying float vBrightness;
+  //varying float vBrightness;
 
   void main() {
-    vBrightness = brightness;
+    //vBrightness = brightness;
 
-    gl_PointSize = size;
+    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+    gl_PointSize = 15.;//size;
   }
 
 </script>
 
 <script type="x-fragment-shader" id="fragment-shader">
-  varying float vBrightness;
-  uniform texture2D map;
+  //varying float vBrightness;
+  uniform sampler2D map;
 
   void main() {
-    //gl_FragColor =
+    gl_FragColor = vec4(1., 1., 1., 1.);
 
   }
 
