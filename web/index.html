@@ -85,31 +85,32 @@
   void main() {
     vec4 texture;
     if (vGType == 0.) {
-      if (vGImg == 0.) {
+      if (vGImg < .1) {
         texture = texture2D(map_ellip1, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
-      else if (vGImg == 1.) {
-        texture = texture2D(map_ellip2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
+      else {
+        // TODO remove ellip2
+        texture = texture2D(map_ellip1, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
     }
     else if (vGType == 1.) {
-      if (vGImg == 0.) {
-        texture = texture2D(map_spiral2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
+      if (vGImg < .1) {
+        texture = texture2D(map_spiral1, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
-      else if (vGImg == 1.) {
-        texture = texture2D(map_spiral2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
+      else {
+        // TODO spiral2 no good
+        texture = texture2D(map_spiral1, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
     }
     else if (vGType == 2.) {
-      if (vGImg == 0.) {
-        texture = texture2D(map_irreg2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
+      if (vGImg < .1) {
+        texture = texture2D(map_irreg1, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
-      else if (vGImg == 1.) {
+      else {
         texture = texture2D(map_irreg2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
     }
-    //gl_FragColor = vec4(vR, vG, vB, 1.) * texture;
-    gl_FragColor = texture;
+    gl_FragColor = vec4(vR, vG, vB, 1.) * texture;
   }
 
 </script>
