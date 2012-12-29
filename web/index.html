@@ -57,7 +57,7 @@
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = clamp(s, 3., 1000.);
+    gl_PointSize = clamp(s, 1., 100.);
   }
 
 </script>

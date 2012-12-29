@@ -209,7 +209,16 @@ $(function() {
         var lumpct = lum;
         lumpct = Math.min(lumpct, 100);
         lumpct = Math.max(lumpct, 0);
-        var rgb = hexToRgb(getColorFromPercent(lumpct, 0xffcccc, 0xff6600));
+        var rgb;
+        if (lumpct > .8) {
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xADADFF, 0xffcccc));
+        }
+        else if (lumpct > .3) {
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFFF75, 0xE6E65C));
+        }
+        else {
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
+        }
         //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
         attributes.r.value[idx] = rgb.r/255;
         attributes.g.value[idx] = rgb.g/255;
