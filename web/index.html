@@ -110,7 +110,8 @@
         texture = texture2D(map_irreg2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
     }
-    gl_FragColor = vec4(vR, vG, vB, 1.) * texture;
+    // TODO brighter when zoomed
+    gl_FragColor = vec4(vR*.3, vG*.3, vB*.3, 1.) * texture;
   }
 
 </script>
@@ -166,7 +167,9 @@
       The location of all objects shown is scientifically accurate.</span>
 		</div>
 	</div>
-  <script src="vendor/vendor.min.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.js"></script>
+  <script src="vendor/three.js/Detector.js"></script>
   <!--<script src="vendor/three.js/Stats.js"></script>-->
   <!--<script src="../js/lib/jquery.min.js"></script>-->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

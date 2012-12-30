@@ -60,25 +60,25 @@ $(function() {
     var cameraH	= 3;
     var cameraW	= cameraH / window.innerHeight * window.innerWidth;
     window.cam = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
-    //camera.position.set(22.39102192510384, -124.78460848134833, -55.29382439584528);
-    //camera.position.set(12.39102192510384, -124.78460848134833, -75.29382439584528);
-
-    //camera.position.set(-145, 41, -31);
     camera.position.set(1592, 600, 983)
     camera.rotation.set(-0.548, 0.9945, 0.5078);
-    // 77, -155, 23
 
-    THREE.Object3D._threexDomEvent.camera(camera);    // camera mouse handler
-    THREEx.WindowResize(renderer, camera);    // handle window resize
+    //THREE.Object3D._threexDomEvent.camera(camera);    // camera mouse handler
+    //THREEx.WindowResize(renderer, camera);    // handle window resize
 
     scene.add(camera);
 
+    /*
     cameraControls	= new THREE.TrackballControlsX(camera)
     cameraControls.staticMoving = true;
     cameraControls.panSpeed = 2;
     cameraControls.zoomSpeed = 3;
     //cameraControls.maxDistance = 1100;
     cameraControls.maxDistance = 2100;
+    */
+    cameraControls = new THREE.OrbitControls(camera);
+    cameraControls.autoRotate = true;
+    cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
 
@@ -253,6 +253,7 @@ $(function() {
       particle_material.depthTest = false;
       particle_material.vertexColor = true;
       particle_material.transparent = true;
+      // TODO custom blending that limits light intensity
       particle_material.blending = THREE.AdditiveBlending;
 
       var particle_system = new THREE.ParticleSystem(particles,
