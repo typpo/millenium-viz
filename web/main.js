@@ -215,12 +215,17 @@ $(function() {
         lumpct = Math.max(lumpct, 0);
         var rgb;
         if (lumpct > .8) {
+          // bluish
           rgb = hexToRgb(getColorFromPercent(lumpct, 0xADADFF, 0xffcccc));
         }
         else if (lumpct > .3) {
+          // TODO get rid of green
           rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFFF75, 0xE6E65C));
         }
         else {
+          // reddish
+          //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFD1B2, 0xFFA366));
+          // more reddish:
           rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
         }
         //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
