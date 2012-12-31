@@ -14,8 +14,9 @@ $(function() {
 
   var WEB_GL_ENABLED = true;
   var SPREAD_FACTOR = 30;
-  var TWINKLE_PROB = 400000;   // 1 in n twinkle
-  var ALL_GALAXIES = true;
+  //var TWINKLE_PROB = 400000;   // 1 in n twinkle
+  var TWINKLE_PROB = 100;   // 1 in n twinkle
+  var ALL_GALAXIES = false;
 
   var stats, scene, renderer, composer;
   var camera, cameraControls;
@@ -77,7 +78,7 @@ $(function() {
     cameraControls.maxDistance = 2100;
     */
     cameraControls = new THREE.OrbitControls(camera);
-    cameraControls.autoRotate = true;
+    //cameraControls.autoRotate = true;
     cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff

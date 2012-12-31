@@ -38,6 +38,7 @@
   varying float vRand;
   varying float vGType;
   varying float vGImg;
+  varying float vJsTime;
 
   void main() {
     vBrightness = brightness;
@@ -48,12 +49,15 @@
     vRand = rand;
     vGType = gtype;
     vGImg = gimg;
+    vJsTime = js_time;
 
     float s = size;
+    /*
     if (rand == twinkleRand) {
       s = s * 1. * abs(time + rand/TWINKLE_PROB*30.);
       //s = s * 3. * abs(time + rand);
     }
+    */
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
@@ -68,9 +72,10 @@
   varying float vR;
   varying float vG;
   varying float vB;
-  varying float rand;
+  varying float vRand;
   varying float vGType;
   varying float vGImg;
+  varying float vJsTime;
 
   uniform float time;
 
@@ -111,7 +116,9 @@
       }
     }
     // TODO brighter when zoomed
-    gl_FragColor = vec4(vR*.3, vG*.3, vB*.3, 1.) * texture;
+    float variance = 0.1;
+    gl_FragColor = vec4(vR*.25, vG*.25, vB*.25, 1.) * texture
+      * (1.0 - (sin(vJsTime*vRand)+1.0)*variance*0.5);
   }
 
 </script>
