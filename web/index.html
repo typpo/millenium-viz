@@ -17,6 +17,9 @@
   uniform float lastTwinkle;
   uniform float js_time;
   uniform float time;
+  uniform float camPosX;
+  uniform float camPosY;
+  uniform float camPosZ;
 
   attribute float brightness;
   attribute float size;
@@ -39,6 +42,7 @@
   varying float vGType;
   varying float vGImg;
   varying float vJsTime;
+  varying float vDist;
 
   void main() {
     vBrightness = brightness;
@@ -60,6 +64,10 @@
     */
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+    float xs = pos[0] - camPosX;
+    float ys = pos[1] - camPosY;
+    float zs = pos[2] - camPosZ;
+    vDist = sqrt(xs*xs + ys*ys + zs*zs);
     gl_Position = projectionMatrix * mvPosition;
     gl_PointSize = clamp(s, 1., 100.);
   }
@@ -76,6 +84,7 @@
   varying float vGType;
   varying float vGImg;
   varying float vJsTime;
+  varying float vDist;
 
   uniform float time;
 
@@ -117,8 +126,16 @@
     }
     // TODO brighter when zoomed
     float variance = 0.1;
-    gl_FragColor = vec4(vR*.25, vG*.25, vB*.25, 1.) * texture
+    vec4 color;
+    if (vDist > 500.) {
+      color = vec4(vR*.25, vG*.25, vB*.25, 1.);
+    }
+    else {
+      color = vec4(vR, vG, vB, 1.);
+    }
+    color  = color * texture
       * (1.0 - (sin(vJsTime*vRand)+1.0)*variance*0.5);
+    gl_FragColor = color;
   }
 
 </script>

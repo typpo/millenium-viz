@@ -163,6 +163,9 @@ $(function() {
         twinkleRand: { type: "f", value: 1.0 },
         lastTwinkle: { type: "f", value: 1.0 },
         js_time: { type: "f", value: +new Date() },
+        camPosX: { type: "f", value: 1.0 },
+        camPosY: { type: "f", value: 1.0 },
+        camPosZ: { type: "f", value: 1.0 }
       };
 
 /*
@@ -283,6 +286,10 @@ $(function() {
         uniforms.twinkleRand.value = Math.floor(Math.random() * TWINKLE_PROB);
         uniforms.lastTwinkle.value = lastTwinkle = now;
       }
+
+      uniforms.camPosX.value = cam.position.x;
+      uniforms.camPosY.value = cam.position.y;
+      uniforms.camPosZ.value = cam.position.z;
     }
 
     render();
