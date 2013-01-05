@@ -16,7 +16,7 @@ $(function() {
   var SPREAD_FACTOR = 30;
   //var TWINKLE_PROB = 400000;   // 1 in n twinkle
   var TWINKLE_PROB = 100;   // 1 in n twinkle
-  var ALL_GALAXIES = false;
+  var ALL_GALAXIES = true;
 
   var stats, scene, renderer, composer;
   var camera, cameraControls;
@@ -131,11 +131,12 @@ $(function() {
   function load() {
     var path;
     if (ALL_GALAXIES) {
-      path = '../data/full.json';
+      //path = '../data/full.json';
     }
     else {
-      path = '../data/partial.json';
+      //path = '../data/partial.json';
     }
+      path = '../data/snapnum63.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -228,6 +229,9 @@ $(function() {
           // more reddish:
           rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
         }
+        // all oragney:
+        //rgb = hexToRgb(getColorFromPercent(lumpct, 0xffa366, 0xffcccc));
+
         //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
         attributes.r.value[idx] = rgb.r/255;
         attributes.g.value[idx] = rgb.g/255;

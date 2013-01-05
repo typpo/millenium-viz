@@ -62,9 +62,9 @@
       //s = s * 3. * abs(time + rand);
     }
     */
-    if (vDist > 400.) {
+    //if (vDist > 400.) {
       s *= 3.;
-    }
+    //}
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     float xs = pos[0] - camPosX;
@@ -127,7 +127,8 @@
         texture = texture2D(map_irreg2, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
       }
     }
-    float variance = 0.1;
+    // just everything glow for now
+    texture = texture2D(map, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
     vec4 color;
     if (vDist > 400.) {
       color = vec4(vR*.25, vG*.25, vB*.25, 1.);
@@ -135,6 +136,8 @@
     else {
       color = vec4(vR*1.0, vG*1.0, vB*1.0, 1.);
     }
+    float variance = 0.1;
+      color = vec4(vR*1.0, vG*1.0, vB*1.0, 1.);
     color  = color * texture
       * (1.0 - (sin(vJsTime*vRand)+1.0)*variance*0.5);
     gl_FragColor = color;
