@@ -3,23 +3,45 @@
 
 import urllib2
 import sys
+import secrets
+import base64
 from urllib import urlencode
+
+if len(sys.argv) != 3:
+  print "usage: scrape.py starting_galaxy_id output"
+  print "If you are starting anew, set starting_galaxy_id to -1"
+  sys.exit(1)
 
 galaxyID = int(sys.argv[1])
 OUTPUT = sys.argv[2]
+test = len(sys.argv) > 4 and sys.argv[3] == 'test'
 
 done = False
 while not done:
   print 'Querying galaxyID %d+' % galaxyID
 
+  if test:
+    url = 'http://galaxy-catalogue.dur.ac.uk:8080/Millennium/MyDB'
+  else:
+    url = 'http://gavo.mpa-garching.mpg.de/MyMillennium/MyDB'
+
+  if test:
+    query = 'select * from millimil..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID
+  else:
+    query = 'select * from MPAGalaxies..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID
+
   data = {
     'action': 'doQuery',
     'queryMode': 'stream',
     'batch': 'false',
-    'SQL': 'select * from millimil..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID,
+    'SQL': query,
   }
 
-  req = urllib2.Request('http://galaxy-catalogue.dur.ac.uk:8080/Millennium/MyDB', data=urlencode(data))
+  req = urllib2.Request(url, data=urlencode(data))
+  if not test:
+    base64string = base64.encodestring('%s:%s' \
+        % (secrets.DB_USERNAME, secrets.DB_PASSWORD)).replace('\n', '')
+    req.add_header("Authorization", "Basic %s" % base64string)
   resp = urllib2.urlopen(req).read()
 
   entries = resp.splitlines()[68:-7]

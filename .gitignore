@@ -5,6 +5,8 @@
 *.log
 *.rdb
 
+data/secrets.py
+
 node_modules
 build
 pip-log.txt
