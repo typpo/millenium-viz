@@ -28,7 +28,10 @@ while not done:
   if test:
     query = 'select * from millimil..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID
   else:
-    query = 'select * from MPAGalaxies..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID
+    topGalaxyID = galaxyID + 9994849000313
+    query = 'select * from MPAGalaxies..DeLucia2006a where snapnum=63 and galaxyID > %d and galaxyID < %d' \
+        % (galaxyID, topGalaxyID)
+
 
   data = {
     'action': 'doQuery',
@@ -44,12 +47,17 @@ while not done:
     req.add_header("Authorization", "Basic %s" % base64string)
   resp = urllib2.urlopen(req).read()
 
-  entries = resp.splitlines()[68:-7]
+  #entries = resp.splitlines()[68:-7]   #if we expect timeout
+  entries = resp.splitlines()[68:-1]   # if we don't expect timeout
 
   try:
     galaxyID = int(entries[-1].split(',')[0])    # last id
   except IndexError:
     done = True
+  except ValueError:
+    # nothing in these query results
+    galaxyID = topGalaxyID
+    continue
 
   f = open(OUTPUT, 'a')
   f.write('\n'.join(entries))
