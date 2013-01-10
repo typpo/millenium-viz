@@ -29,7 +29,7 @@ while not done:
     query = 'select * from millimil..DeLucia2006a where snapnum=63 and galaxyID > %d' % galaxyID
   else:
     topGalaxyID = galaxyID + 9994849000313
-    query = 'select * from MPAGalaxies..DeLucia2006a where snapnum=63 and galaxyID > %d and galaxyID < %d' \
+    query = 'select galaxyID,x,y,z,diskRadius,sfr from MPAGalaxies..DeLucia2006a where snapnum=63 and x between -250 and 250 and y between -250 and 250 and z between -250 and 250 and galaxyID between %d and %d order by galaxyId asc' \
         % (galaxyID, topGalaxyID)
 
 
@@ -48,7 +48,7 @@ while not done:
   resp = urllib2.urlopen(req).read()
 
   #entries = resp.splitlines()[68:-7]   #if we expect timeout
-  entries = resp.splitlines()[68:-1]   # if we don't expect timeout
+  entries = resp.splitlines()[13:-1]   # if we don't expect timeout
 
   try:
     galaxyID = int(entries[-1].split(',')[0])    # last id

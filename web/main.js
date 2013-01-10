@@ -78,7 +78,7 @@ $(function() {
     cameraControls.maxDistance = 2100;
     */
     cameraControls = new THREE.OrbitControls(camera);
-    //cameraControls.autoRotate = true;
+    cameraControls.autoRotate = true;
     cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
@@ -137,7 +137,7 @@ $(function() {
       //path = '../data/partial.json';
     }
       //path = '../data/snapnum63.json';
-      path = '../data/foo.json';
+      path = '../data/partbox.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -184,21 +184,23 @@ $(function() {
       var minsize = Number.MIN_VALUE;
       var maxlum = Number.MAX_VALUE;
       var minlum = Number.MIN_VALUE;
-      $.each(data.positions, function(idx) {
-        var x = this[0] * SPREAD_FACTOR
-          , y = this[1] * SPREAD_FACTOR
-          , z = this[2] * SPREAD_FACTOR
+      var l = data.positions.length;
+      for (var i=0; i < l; i++) {
+        var pos = data.positions[i];
+        var x = pos[0] * SPREAD_FACTOR
+          , y = pos[1] * SPREAD_FACTOR
+          , z = pos[2] * SPREAD_FACTOR
         ;
         var pos = new THREE.Vector3(x,y,z);
         attributes.pos.value[idx] = pos;
 
-        var size = this[3] * 750;
+        var size = pos[3] * 750;
         if (size > 9999 || size < 0) {
           attributes.size.value[idx] = 0.;
           attributes.brightness.value[idx] = 0.;
         }
 
-        var lum = this[4];
+        var lum = pos[4];
         if (lum > 9999 || lum < 0) {
           attributes.size.value[idx] = 0.;
           attributes.brightness.value[idx] = 0.;
@@ -256,7 +258,7 @@ $(function() {
 
         // add to mesh
         particles.vertices.push(pos);
-      });
+      }
 
       var particle_material = new THREE.ShaderMaterial( {
         uniforms:       uniforms,
@@ -267,7 +269,6 @@ $(function() {
       particle_material.depthTest = false;
       particle_material.vertexColor = true;
       particle_material.transparent = true;
-      // TODO custom blending that limits light intensity
       particle_material.blending = THREE.AdditiveBlending;
 
       var particle_system = new THREE.ParticleSystem(particles,

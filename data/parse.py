@@ -24,8 +24,12 @@ with open(sys.argv[1], 'r') as datafile:
     if json:
       if not first:
         print ',',
-      print '[%f, %f, %f, %f, %f]' \
-          % (float(row['x']), float(row['y']), float(row['z']), float(row['diskRadius']), float(row['sfr']))
+      try:
+        print '[%f, %f, %f, %f, %f]' \
+            % (float(row['x']), float(row['y']), float(row['z']), float(row['diskRadius']), float(row['sfr']))
+      except:
+        pass
+
     else:
       print '%s %s %s' % (row['x'], row['y'], row['z'])
     first = False
