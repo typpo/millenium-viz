@@ -61,8 +61,8 @@ $(function() {
     var cameraH	= 3;
     var cameraW	= cameraH / window.innerHeight * window.innerWidth;
     window.cam = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
-    //camera.position.set(1592, 600, 983)
-    camera.position.set(3750, 3750, 3750);
+    camera.position.set(1592, 600, 983)
+    //camera.position.set(3750, 3750, 3750);
     //camera.rotation.set(-0.548, 0.9945, 0.5078);
 
     //THREE.Object3D._threexDomEvent.camera(camera);    // camera mouse handler
@@ -79,7 +79,7 @@ $(function() {
     cameraControls.maxDistance = 2100;
     */
     cameraControls = new THREE.OrbitControls(camera);
-    cameraControls.autoRotate = true;
+    //cameraControls.autoRotate = true;
     cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
