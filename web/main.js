@@ -137,7 +137,8 @@ $(function() {
       //path = '../data/partial.json';
     }
       //path = '../data/snapnum63.json';
-      path = '../data/partbox.json';
+      //path = '../data/fullbox.json';
+      path = '../data/testout.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -184,97 +185,80 @@ $(function() {
       var minsize = Number.MIN_VALUE;
       var maxlum = Number.MAX_VALUE;
       var minlum = Number.MIN_VALUE;
-      var idx = 0;
-        var fn = function() {
-          var x = this[0] * SPREAD_FACTOR
-            , y = this[1] * SPREAD_FACTOR
-            , z = this[2] * SPREAD_FACTOR
-          ;
-          var pos = new THREE.Vector3(x,y,z);
-          attributes.pos.value[idx] = pos;
+      $.each(data.positions, function(idx) {
 
-          var size = this[3] * 750;
-          if (size > 9999 || size < 0) {
-            attributes.size.value[idx] = 0.;
-            attributes.brightness.value[idx] = 0.;
-          }
+        var x = this[0] * SPREAD_FACTOR
+          , y = this[1] * SPREAD_FACTOR
+          , z = this[2] * SPREAD_FACTOR
+        ;
+        var pos = new THREE.Vector3(x,y,z);
+        attributes.pos.value[idx] = pos;
 
-          var lum = this[4];
-          if (lum > 9999 || lum < 0) {
-            attributes.size.value[idx] = 0.;
-            attributes.brightness.value[idx] = 0.;
-          }
+        var size = this[3] * 750;
+        if (size > 9999 || size < 0) {
+          attributes.size.value[idx] = 0.;
+          attributes.brightness.value[idx] = 0.;
+        }
 
-          maxsize = Math.max(maxsize, size);
-          minsize = Math.min(maxsize, size);
+        var lum = this[4];
+        if (lum > 9999 || lum < 0) {
+          attributes.size.value[idx] = 0.;
+          attributes.brightness.value[idx] = 0.;
+        }
 
-          maxlum = Math.max(maxlum, lum);
-          minlum = Math.min(maxlum, lum);
+        maxsize = Math.max(maxsize, size);
+        minsize = Math.min(maxsize, size);
 
-          attributes.size.value[idx] = size;
-          attributes.brightness.value[idx] = lum;
-          var lumpct = lum;
-          lumpct = Math.min(lumpct, 100);
-          lumpct = Math.max(lumpct, 0);
-          var rgb;
-          if (lumpct > .8) {
-            // bluish
-            rgb = hexToRgb(getColorFromPercent(lumpct, 0xADADFF, 0xffcccc));
-          }
-          else if (lumpct > .3) {
-            // TODO get rid of green
-            rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFFF75, 0xE6E65C));
-          }
-          else {
-            // reddish
-            //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFD1B2, 0xFFA366));
-            // more reddish:
-            rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
-          }
-          // all oragney:
-          //rgb = hexToRgb(getColorFromPercent(lumpct, 0xffa366, 0xffcccc));
+        maxlum = Math.max(maxlum, lum);
+        minlum = Math.min(maxlum, lum);
 
-          //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
-          attributes.r.value[idx] = rgb.r/255;
-          attributes.g.value[idx] = rgb.g/255;
-          attributes.b.value[idx] = rgb.b/255;
-          attributes.rand.value[idx] = Math.floor(Math.random() * TWINKLE_PROB);
+        attributes.size.value[idx] = size;
+        attributes.brightness.value[idx] = lum;
+        var lumpct = lum;
+        lumpct = Math.min(lumpct, 100);
+        lumpct = Math.max(lumpct, 0);
+        var rgb;
+        if (lumpct > .8) {
+          // bluish
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xADADFF, 0xffcccc));
+        }
+        else if (lumpct > .3) {
+          // TODO get rid of green
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFFF75, 0xE6E65C));
+        }
+        else {
+          // reddish
+          //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFD1B2, 0xFFA366));
+          // more reddish:
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
+        }
+        // all oragney:
+        //rgb = hexToRgb(getColorFromPercent(lumpct, 0xffa366, 0xffcccc));
 
-          // decide what type of galaxy it is
-          var rtype = Math.random();
-          var rimg = Math.floor(Math.random() * 2) + 1;
-          if (rtype < .6) {
-            rtype = 0; // elliptical
-          }
-          else if (rtype < .8) {
-            rtype = 1; //spiral
-          }
-          else {
-            rtype = 2; // irregular
-          }
-          attributes.gtype.value[idx] = rtype;
-          attributes.gimg.value[idx] = rimg;
+        //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
+        attributes.r.value[idx] = rgb.r/255;
+        attributes.g.value[idx] = rgb.g/255;
+        attributes.b.value[idx] = rgb.b/255;
+        attributes.rand.value[idx] = Math.floor(Math.random() * TWINKLE_PROB);
 
-          // add to mesh
-          particles.vertices.push(pos);
-          if (idx >= data.positions.length) {
-            console.log('done');
-            return;
-          }
+        // decide what type of galaxy it is
+        var rtype = Math.random();
+        var rimg = Math.floor(Math.random() * 2) + 1;
+        if (rtype < .6) {
+          rtype = 0; // elliptical
+        }
+        else if (rtype < .8) {
+          rtype = 1; //spiral
+        }
+        else {
+          rtype = 2; // irregular
+        }
+        attributes.gtype.value[idx] = rtype;
+        attributes.gimg.value[idx] = rimg;
 
-          if (idx % 10000 === 0) {
-            console.log(idx);
-            setTimeout(function() {
-              fn.apply(data.positions[++idx]);
-            }, 60);
-          }
-          else {
-            setTimeout(function() {
-              fn.apply(data.positions[++idx]);
-            }, 0);
-          }
-        };
-        fn.apply(data.positions[0]);
+        // add to mesh
+        particles.vertices.push(pos);
+      });
 
       var particle_material = new THREE.ShaderMaterial( {
         uniforms:       uniforms,
