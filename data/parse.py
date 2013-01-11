@@ -28,13 +28,16 @@ with open(sys.argv[1], 'r') as datafile:
 
   c = 0
   for row in reader:
-    normalized_x = doround(float(row['x']) * SPREAD_FACTOR)
-    normalized_y = doround(float(row['y']) * SPREAD_FACTOR)
-    normalized_z = doround(float(row['z']) * SPREAD_FACTOR)
+    f_x = float(row['x'])
+    f_y = float(row['y'])
+    f_z = float(row['z'])
+    normalized_x = doround(f_x * SPREAD_FACTOR)
+    normalized_y = doround(f_y * SPREAD_FACTOR)
+    normalized_z = doround(f_z * SPREAD_FACTOR)
     triple = (normalized_x, normalized_y, normalized_z)
 
     dedup.setdefault(triple, [])
-    dedup[triple].append((float(row['diskRadius']), float(row['sfr'])))
+    dedup[triple].append((f_x, f_y, f_z, float(row['diskRadius']), float(row['sfr'])))
 
     c += 1
     if c % 50000 == 0:
@@ -52,34 +55,36 @@ for key, val in dedup.iteritems():
     blobbed_count += 1
     # additive disk radius, average star formation rate
     try:
-      diskRadius = 0.0
+      x = y = z = diskRadius = sfr = 0.0
       for v in val:
-        diskRadius += v[0]
-      sfr = 0.0
-      for v in val:
-        sfr += v[1]
+        x += v[0]
+        y += v[1]
+        z += v[2]
+        diskRadius += v[3]
+        sfr += v[4]
       sfr /= len(val)
-      #diskRadius = reduce(lambda x, y: x['diskRadius'] + y['diskRadius'], val)
-      #sfr = reduce(lambda x, y: x['sfr'] + y['sfr'], val) / len(val)
+      x /= len(val)
+      y /= len(val)
+      z /= len(val)
     except:
       print 'Error with val:'
       print val
       sys.exit(1)
 
     blobs.append({
-      'x': key[0],
-      'y': key[1],
-      'z': key[2],
+      'x': x,
+      'y': y,
+      'z': z,
       'diskRadius': diskRadius,
       'sfr': sfr,
     })
   else:
     blobs.append({
-      'x': key[0],
-      'y': key[1],
-      'z': key[2],
-      'diskRadius': val[0][0],
-      'sfr': val[0][1],
+      'x': val[0][0],
+      'y': val[0][1],
+      'z': val[0][2],
+      'diskRadius': val[0][3],
+      'sfr': val[0][4],
     })
 
   c += 1
@@ -109,5 +114,5 @@ for blob in blobs:
 f.write(']}')
 f.close()
 
-print c, ' total'
+print c, 'total'
 print 'Done.'

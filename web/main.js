@@ -136,8 +136,8 @@ $(function() {
     else {
       //path = '../data/partial.json';
     }
-      //path = '../data/snapnum63.json';
       //path = '../data/fullbox.json';
+      //path = '../data/partbox.json';
       path = '../data/testout.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
