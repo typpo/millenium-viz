@@ -302,6 +302,8 @@ $(function() {
       uniforms.camPosX.value = cam.position.x;
       uniforms.camPosY.value = cam.position.y;
       uniforms.camPosZ.value = cam.position.z;
+
+      cam.position.z = 7000 * Math.abs(Math.sin(now * 0.00001));
     }
 
     render();
