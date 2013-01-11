@@ -68,9 +68,9 @@
     float zs = pos[2] - camPosZ;
     vDist = sqrt(xs*xs + ys*ys + zs*zs);
 
-    if (vDist < 1000.) {
+    //if (vDist < 1000.) {
       s *= 10./(1.+pow(e, 0.005*(vDist-1000.)));
-    }
+    //}
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;

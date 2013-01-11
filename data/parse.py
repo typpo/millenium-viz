@@ -20,7 +20,8 @@ dedup = {}
 
 # build index and squash dataset
 print 'Indexing...'
-def doround(x, base=10):
+def doround(x, base=35):
+  # round to nearest 10 pixels by default
   return int(base * round(float(x)/base))
 
 with open(sys.argv[1], 'r') as datafile:
