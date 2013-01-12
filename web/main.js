@@ -230,9 +230,9 @@ $(function() {
         }
         else {
           // reddish
-          //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFD1B2, 0xFFA366));
+          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFD1B2, 0xFFA366));
           // more reddish:
-          rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
+          //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
         }
         // all oragney:
         //rgb = hexToRgb(getColorFromPercent(lumpct, 0xffa366, 0xffcccc));
@@ -314,7 +314,7 @@ $(function() {
       uniforms.camPosY.value = cam.position.y;
       uniforms.camPosZ.value = cam.position.z;
 
-      //cam.position.z = 7000 * Math.abs(Math.sin(now * 0.00001));
+      //cam.position.z = 3000 * Math.abs(Math.sin(now * 0.00001));
     }
 
     render();

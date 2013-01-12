@@ -79,13 +79,13 @@
     //if (vDist < 1000.) {
     // TODO adjust numerator by camera distance - shrink as fov gets further
     // so users can see tendrils
-      s *= 10./(1.+pow(e, 0.005*(vDist-1000.)));
-      if (vDist > 2000.) s = 4.5;
+      s *= 10./(1.+pow(e, 0.0025*(vDist-300.)));
+      //if (vDist > 2000.) s = 4.5;
     //}
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = clamp(s, 1., 100.);
+    gl_PointSize = clamp(s, 5., 50.);
   }
 
 </script>
@@ -150,8 +150,8 @@
     texture = texture2D(map, vec2(gl_PointCoord.x, 1.0 - gl_PointCoord.y));
     vec4 color;
     if (vDist > 1000.) {
-      //color = vec4(vR*.25, vG*.25, vB*.25, 1.);
-      color = vec4(vR*1.0, vG*1.0, vB*1.0, 1.);
+      color = vec4(vR*.20, vG*.20, vB*.20, 1.0);
+      //color = vec4(vR*1.0, vG*1.0, vB*1.0, 1.);
     }
     else {
       color = vec4(vR*1.0, vG*1.0, vB*1.0, 1.);
