@@ -13,7 +13,7 @@ $(function() {
   })();
 
   var WEB_GL_ENABLED = true;
-  var SPREAD_FACTOR = 30;
+  var SPREAD_FACTOR = 10;
   //var TWINKLE_PROB = 400000;   // 1 in n twinkle
   var TWINKLE_PROB = 100;   // 1 in n twinkle
   var ALL_GALAXIES = true;
@@ -64,6 +64,7 @@ $(function() {
     camera.position.set(1592, 600, 983)
     //camera.position.set(3750, 3750, 3750);
     //camera.rotation.set(-0.548, 0.9945, 0.5078);
+    camera.center = new THREE.Vector3(0,0,0);
 
     //THREE.Object3D._threexDomEvent.camera(camera);    // camera mouse handler
     //THREEx.WindowResize(renderer, camera);    // handle window resize
@@ -188,9 +189,9 @@ $(function() {
       var minlum = Number.MIN_VALUE;
       $.each(data.positions, function(idx) {
 
-        var x = this[0] * SPREAD_FACTOR
-          , y = this[1] * SPREAD_FACTOR
-          , z = this[2] * SPREAD_FACTOR
+        var x = (this[0]-125) * SPREAD_FACTOR
+          , y = (this[1]-125) * SPREAD_FACTOR
+          , z = (this[2]-125) * SPREAD_FACTOR
         ;
         var pos = new THREE.Vector3(x,y,z);
         attributes.pos.value[idx] = pos;
@@ -272,6 +273,16 @@ $(function() {
       particle_material.transparent = true;
       particle_material.blending = THREE.AdditiveBlending;
 
+      /*
+      particle_material =  new THREE.ParticleBasicMaterial({
+        color: 0xFFFFFF,
+        size: 10,
+        map: THREE.ImageUtils.loadTexture('images/cloud4.png'),
+        transparent: true,
+        depthTest: false
+      });
+      */
+
       var particle_system = new THREE.ParticleSystem(particles,
                                                      particle_material);
       scene.add(particle_system);
@@ -303,7 +314,7 @@ $(function() {
       uniforms.camPosY.value = cam.position.y;
       uniforms.camPosZ.value = cam.position.z;
 
-      cam.position.z = 7000 * Math.abs(Math.sin(now * 0.00001));
+      //cam.position.z = 7000 * Math.abs(Math.sin(now * 0.00001));
     }
 
     render();

@@ -49,11 +49,13 @@ with open(sys.argv[1], 'r') as datafile:
 # now squash close galaxies into blobs
 blobs = []
 blobbed_count = 0
+blobbed_total = 0
 print 'Blobbing...'
 c = 0
 for key, val in dedup.iteritems():
   if len(val) > 1:
     blobbed_count += 1
+    blobbed_total += len(val)
     # additive disk radius, average star formation rate
     try:
       x = y = z = diskRadius = sfr = 0.0
@@ -92,7 +94,7 @@ for key, val in dedup.iteritems():
   if c % 50000 == 0:
     print c, '...'
 
-print 'Blobbed count:', blobbed_count
+print 'Blobbed count: compressed', blobbed_total, 'to', blobbed_count
 
 # main output
 print 'Writing output to', OUTPUT
