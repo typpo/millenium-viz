@@ -14,9 +14,6 @@ $(function() {
 
   var WEB_GL_ENABLED = true;
   var SPREAD_FACTOR = 10;
-  //var TWINKLE_PROB = 400000;   // 1 in n twinkle
-  var TWINKLE_PROB = 100;   // 1 in n twinkle
-  var ALL_GALAXIES = true;
 
   var stats, scene, renderer, composer;
   var camera, cameraControls;
@@ -131,16 +128,7 @@ $(function() {
   }
 
   function load() {
-    var path;
-    if (ALL_GALAXIES) {
-      //path = '../data/full.json';
-    }
-    else {
-      //path = '../data/partial.json';
-    }
-      //path = '../data/fullbox.json';
-      //path = '../data/partbox.json';
-      path = '../data/testout.json';
+    var path = '../data/testout.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -150,39 +138,23 @@ $(function() {
         r: {type: 'f', value: []},
         g: {type: 'f', value: []},
         b: {type: 'f', value: []},
-        pos: { type: "v3", value: []},
-        rand: { type: "f", value: []},
-        gtype: { type: "f", value: []},
-        gimg: { type: "f", value: []}
-        //color: { type: "v3", value: []}
+        pos: { type: "v3", value: []}
       };
       uniforms = {
         map: { type: "t", value: THREE.ImageUtils.loadTexture("images/cloud4.png") },
+      /*
         map_ellip1: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/elliptical1.jpg") },
         map_ellip2: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/elliptical2.jpg") },
         map_spiral1: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/spiral1.jpg") },
         map_spiral2: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/spiral2.jpg") },
         map_irreg1: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/irreg1.jpg") },
         map_irreg2: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/irreg2.jpg") },
-        time: { type: "f", value: +new Date() },
-        twinkleRand: { type: "f", value: 1.0 },
-        lastTwinkle: { type: "f", value: 1.0 },
-        js_time: { type: "f", value: +new Date() },
+        */
         camPosX: { type: "f", value: 1.0 },
         camPosY: { type: "f", value: 1.0 },
         camPosZ: { type: "f", value: 1.0 }
       };
 
-/*
-      var particle_material = new THREE.ParticleBasicMaterial({
-        color: 0xffffff,
-        size: 5,
-        map: THREE.ImageUtils.loadTexture('images/cloud4.png'),
-        blending: THREE.AdditiveBlending,
-        transparent: true,
-        depthWrite: false
-      });
-*/
       var maxsize = Number.MAX_VALUE;
       var minsize = Number.MIN_VALUE;
       var maxlum = Number.MAX_VALUE;
@@ -234,14 +206,12 @@ $(function() {
           // more reddish:
           //rgb = hexToRgb(getColorFromPercent(lumpct, 0xFFA366, 0xff6600));
         }
-        // all oragney:
+        // all orangey:
         //rgb = hexToRgb(getColorFromPercent(lumpct, 0xffa366, 0xffcccc));
 
-        //attributes.color.value[idx] = new THREE.Vector3(rgb.r/255, rgb.g/255, rgb.b/255);
         attributes.r.value[idx] = rgb.r/255;
         attributes.g.value[idx] = rgb.g/255;
         attributes.b.value[idx] = rgb.b/255;
-        attributes.rand.value[idx] = Math.floor(Math.random() * TWINKLE_PROB);
 
         // decide what type of galaxy it is
         var rtype = Math.random();
@@ -290,7 +260,7 @@ $(function() {
       $('#loading').hide();
 
       setTimeout(function() {
-        var newpos = new THREE.Vector3(10,10,10);
+        var newpos = new THREE.Vector3(10, 10, 10);
         console.log('tweeniningigng');
         var pos = camera.position;
         new TWEEN.Tween(pos).to( {
@@ -299,11 +269,6 @@ $(function() {
                 z: newpos.z}, 8000)
             .easing( TWEEN.Easing.Sinusoidal.InOut)
             .onUpdate(function() {
-              /*
-              camera.position.x = pos.x;
-              camera.position.y = pos.y;
-              camera.position.z = pos.z;
-              */
               camera.position = pos;
               camera.updateProjectionMatrix();
             })
@@ -315,22 +280,7 @@ $(function() {
   // animation loop
   var lastTwinkle = +new Date();
   function animate() {
-    /*
-    var timer = 0.0001 * Date.now();
-    cam.position.x = Math.sin(timer) * 25;
-    //cam.position.y = Math.sin( timer ) * 100;
-    cam.position.z = -100 + Math.cos(timer) * 20;
-    */
-
     if (uniforms) {
-      //uniforms.time.value = Math.sin(+new Date());
-      var now = uniforms.js_time.value = +new Date();
-      uniforms.time.value = Math.sin(Math.floor(now / 100));
-      if (now - lastTwinkle > 200 && Math.random() > 0.5) {
-        uniforms.twinkleRand.value = Math.floor(Math.random() * TWINKLE_PROB);
-        uniforms.lastTwinkle.value = lastTwinkle = now;
-      }
-
       uniforms.camPosX.value = cam.position.x;
       uniforms.camPosY.value = cam.position.y;
       uniforms.camPosZ.value = cam.position.z;
@@ -347,8 +297,6 @@ $(function() {
   function render() {
     // update camera controls
     cameraControls.update();
-    //stats.update();
-
     // actually render the scene
     renderer.render(scene, camera);
   }

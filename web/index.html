@@ -14,41 +14,23 @@
   #define TWINKLE_PROB 400000.
   #define e 2.71828182846
 
-  /*
-  uniform float twinkleRand;
-  uniform float lastTwinkle;
-  uniform float js_time;
-  uniform float time;
-  */
   uniform float camPosX;
   uniform float camPosY;
   uniform float camPosZ;
 
   attribute float brightness;
   attribute float size;
-  //attribute vec3 color;
   attribute float r;
   attribute float g;
   attribute float b;
-  /*
-  attribute float rand;
-  attribute float gtype;
-  attribute float gimg;
-  */
 
   attribute vec3 pos;
 
   varying float vBrightness;
-  //varying vec3 vColor;
   varying float vR;
   varying float vG;
   varying float vB;
   varying float vRand;
-  /*
-  varying float vGType;
-  varying float vGImg;
-  varying float vJsTime;
-  */
   varying float vDist;
 
   void main() {
@@ -57,31 +39,13 @@
     vR = r;
     vG = g;
     vB = b;
-    /*
-    vRand = rand;
-    vGType = gtype;
-    vGImg = gimg;
-    vJsTime = js_time;
-    */
 
-    float s = size;
-    /*
-    if (rand == twinkleRand) {
-      s = s * 1. * abs(time + rand/TWINKLE_PROB*30.);
-      //s = s * 3. * abs(time + rand);
-    }
-    */
     float xs = pos[0] - camPosX;
     float ys = pos[1] - camPosY;
     float zs = pos[2] - camPosZ;
     vDist = sqrt(xs*xs + ys*ys + zs*zs);
 
-    //if (vDist < 1000.) {
-    // TODO adjust numerator by camera distance - shrink as fov gets further
-    // so users can see tendrils
-      s *= 10./(1.+pow(e, 0.0025*(vDist-300.)));
-      //if (vDist > 2000.) s = 4.5;
-    //}
+    float s = size * 10./(1.+pow(e, 0.0025*(vDist-300.)));
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
@@ -92,19 +56,10 @@
 
 <script type="x-fragment-shader" id="fragment-shader">
   varying float vBrightness;
-  //varying vec3 vColor;
   varying float vR;
   varying float vG;
   varying float vB;
-  /*
-  varying float vRand;
-  varying float vGType;
-  varying float vGImg;
-  varying float vJsTime;
-  */
   varying float vDist;
-
-  uniform float time;
 
   uniform sampler2D map;
   /*
