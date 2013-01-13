@@ -39,7 +39,7 @@
     float zs = pos[2] - camPosZ;
     vDist = sqrt(xs*xs + ys*ys + zs*zs);
 
-    float s = size * 10./(1.+pow(e, 0.0025*(vDist-300.)));
+    float s = size * 10./(1.+pow(e, 0.0020*(vDist-300.)));
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
