@@ -17,12 +17,12 @@ OUTPUT = sys.argv[2]
 print 'Output to', OUTPUT
 
 SPREAD_FACTOR = 30
+ROUNDING_AMOUNT = 35   # number of pixels to round
 dedup = {}
 
 # build index and squash dataset
 print 'Indexing...'
-def doround(x, base=35):
-  # round to nearest 35 pixels by default
+def doround(x, base=ROUNDING_AMOUNT):
   return int(base * round(float(x)/base))
 
 with open(sys.argv[1], 'r') as datafile:
@@ -47,49 +47,55 @@ with open(sys.argv[1], 'r') as datafile:
     if n > 0 and c > n:
       break
 
+print 'Adjusting lonely galaxy buckets...'
 c = 0
-for key, val in dedup.iteritems():
+adjusted_count = 0
+for key in dedup.keys():
+  c += 1
+  if c % 50000 == 0:
+    print c, '(', adjusted_count, ')', '...'
+
+  val = dedup[key]
   if len(val) > 1:
     continue
 
   # put lonely ones into nearby buckets
-  def trybucket(x, y, z):
+  def trybucket(tries, x, y, z):
     coord = (x, y, z)
-    if coord in dedup:
-      return (coord, len(dedup[coord] > 1))
-    return (coord, False)
+    if coord in dedup and len(dedup[coord]) > 1:
+      tries.append(coord)
 
   vx = key[0]
   vy = key[1]
   vz = key[2]
-  tries = [
-    trybucket(vx + 1, vy, vz),
-    trybucket(vx - 1, vy, vz),
-    trybucket(vx, vy + 1, vz),
-    trybucket(vx, vy - 1, vz),
-    trybucket(vx, vy, vz + 1),
-    trybucket(vx, vy, vz - 1),
-    trybucket(vx + 1, vy + 1, vz),
-    trybucket(vx - 1, vy - 1, vz),
-    trybucket(vx + 1, vy - 1, vz),
-    trybucket(vx - 1, vy + 1, vz),
-    trybucket(vx, vy + 1, vz + 1),
-    trybucket(vx, vy - 1, vz - 1),
-    trybucket(vx, vy + 1, vz - 1),
-    trybucket(vx, vy - 1, vz + 1),
-    trybucket(vx + 1, vy, vz + 1),
-    trybucket(vx - 1, vy, vz - 1),
-    trybucket(vx + 1, vy, vz - 1),
-    trybucket(vx - 1, vy, vz + 1),
-  ]
-  new_buckets = filter(lambda x: x[1], tries)
+  new_buckets = []
+  for n in range(1, 3):
+    i = n * ROUNDING_AMOUNT
+    trybucket(new_buckets, vx + i, vy, vz)
+    trybucket(new_buckets, vx - i, vy, vz)
+    trybucket(new_buckets, vx, vy + i, vz)
+    trybucket(new_buckets, vx, vy - i, vz)
+    trybucket(new_buckets, vx, vy, vz + i)
+    trybucket(new_buckets, vx, vy, vz - i)
+    trybucket(new_buckets, vx + i, vy + i, vz)
+    trybucket(new_buckets, vx - i, vy - i, vz)
+    trybucket(new_buckets, vx + i, vy - i, vz)
+    trybucket(new_buckets, vx - i, vy + i, vz)
+    trybucket(new_buckets, vx, vy + i, vz + i)
+    trybucket(new_buckets, vx, vy - i, vz - i)
+    trybucket(new_buckets, vx, vy + i, vz - i)
+    trybucket(new_buckets, vx, vy - i, vz + i)
+    trybucket(new_buckets, vx + i, vy, vz + i)
+    trybucket(new_buckets, vx - i, vy, vz - i)
+    trybucket(new_buckets, vx + i, vy, vz - i)
+    trybucket(new_buckets, vx - i, vy, vz + i)
 
   if len(new_buckets) > 1:
-    del dedup[key]
-    dedup[random.choice(new_buckets)[0]].append(val[0])
-    c += 1
+    dedup[random.choice(new_buckets)].append(val[0])
+    adjusted_count += 1
+  del dedup[key]
 
-print c, 'lonely galaxies re-sorted into nearby buckets'
+print adjusted_count, 'lonely galaxies re-sorted into nearby buckets'
 
 # now squash close galaxies into blobs
 blobs = []
@@ -127,6 +133,7 @@ for key, val in dedup.iteritems():
       'sfr': sfr,
     })
   else:
+    """
     blobs.append({
       'x': val[0][0],
       'y': val[0][1],
@@ -134,6 +141,8 @@ for key, val in dedup.iteritems():
       'diskRadius': val[0][3],
       'sfr': val[0][4],
     })
+    """
+    pass
 
   c += 1
   if c % 50000 == 0:

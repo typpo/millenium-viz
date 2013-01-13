@@ -130,7 +130,7 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/testout.json';
+    var path = '../data/testout2.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -171,13 +171,13 @@ $(function() {
         attributes.pos.value[idx] = pos;
 
         var size = this[3] * 750;
-        if (size > 9999 || size < 0) {
+        if (size < 0) {
           attributes.size.value[idx] = 0.;
           attributes.brightness.value[idx] = 0.;
         }
 
         var lum = this[4];
-        if (lum > 9999 || lum < 0) {
+        if (lum < 0) {
           attributes.size.value[idx] = 0.;
           attributes.brightness.value[idx] = 0.;
         }
