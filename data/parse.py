@@ -3,6 +3,7 @@
 
 import csv
 import sys
+import random
 
 if len(sys.argv) < 3:
   print 'usage: parse data.csv output.json [# galaxies]'
@@ -21,7 +22,7 @@ dedup = {}
 # build index and squash dataset
 print 'Indexing...'
 def doround(x, base=35):
-  # round to nearest 10 pixels by default
+  # round to nearest 35 pixels by default
   return int(base * round(float(x)/base))
 
 with open(sys.argv[1], 'r') as datafile:
@@ -45,6 +46,50 @@ with open(sys.argv[1], 'r') as datafile:
       print c, '...'
     if n > 0 and c > n:
       break
+
+c = 0
+for key, val in dedup.iteritems():
+  if len(val) > 1:
+    continue
+
+  # put lonely ones into nearby buckets
+  def trybucket(x, y, z):
+    coord = (x, y, z)
+    if coord in dedup:
+      return (coord, len(dedup[coord] > 1))
+    return (coord, False)
+
+  vx = key[0]
+  vy = key[1]
+  vz = key[2]
+  tries = [
+    trybucket(vx + 1, vy, vz),
+    trybucket(vx - 1, vy, vz),
+    trybucket(vx, vy + 1, vz),
+    trybucket(vx, vy - 1, vz),
+    trybucket(vx, vy, vz + 1),
+    trybucket(vx, vy, vz - 1),
+    trybucket(vx + 1, vy + 1, vz),
+    trybucket(vx - 1, vy - 1, vz),
+    trybucket(vx + 1, vy - 1, vz),
+    trybucket(vx - 1, vy + 1, vz),
+    trybucket(vx, vy + 1, vz + 1),
+    trybucket(vx, vy - 1, vz - 1),
+    trybucket(vx, vy + 1, vz - 1),
+    trybucket(vx, vy - 1, vz + 1),
+    trybucket(vx + 1, vy, vz + 1),
+    trybucket(vx - 1, vy, vz - 1),
+    trybucket(vx + 1, vy, vz - 1),
+    trybucket(vx - 1, vy, vz + 1),
+  ]
+  new_buckets = filter(lambda x: x[1], tries)
+
+  if len(new_buckets) > 1:
+    del dedup[key]
+    dedup[random.choice(new_buckets)[0]].append(val[0])
+    c += 1
+
+print c, 'lonely galaxies re-sorted into nearby buckets'
 
 # now squash close galaxies into blobs
 blobs = []
