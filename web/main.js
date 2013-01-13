@@ -14,13 +14,16 @@ $(function() {
 
   var WEB_GL_ENABLED = true;
   var SPREAD_FACTOR = 10;
+  var WIDTH_PER_PIXEL = 2500 / 1e9;  // in light years per pixel
 
-  var stats, scene, renderer, composer;
+  var stats, scene, renderer, composer, projector;
   var camera, cameraControls;
   var pi = Math.PI;
   var using_webgl = false;
   var camera_fly_around = true;
   var object_movement_on = true;
+
+  var bounding_cube;
 
   var uniforms, attributes;
 
@@ -57,7 +60,7 @@ $(function() {
     // put a camera in the scene
     var cameraH	= 3;
     var cameraW	= cameraH / window.innerHeight * window.innerWidth;
-    window.cam = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
+    window.camera = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
     camera.position.set(1592, 600, 983)
     //camera.position.set(3750, 3750, 3750);
     //camera.rotation.set(-0.548, 0.9945, 0.5078);
@@ -77,8 +80,7 @@ $(function() {
     cameraControls.maxDistance = 2100;
     */
     cameraControls = new THREE.OrbitControls(camera);
-    //cameraControls.autoRotate = true;
-    cameraControls.autoRotateSpeed = 0.2;
+    //cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
 
@@ -225,8 +227,8 @@ $(function() {
         else {
           rtype = 2; // irregular
         }
-        attributes.gtype.value[idx] = rtype;
-        attributes.gimg.value[idx] = rimg;
+        //attributes.gtype.value[idx] = rtype;
+        //attributes.gimg.value[idx] = rimg;
 
         // add to mesh
         particles.vertices.push(pos);
@@ -257,8 +259,14 @@ $(function() {
                                                      particle_material);
       scene.add(particle_system);
 
+      window.bounding_cube = bounding_cube = new THREE.CubeGeometry(1250, 1250, 1250);
+      //scene.add(bounding_cube);
+
+      projector = new THREE.Projector();
+
       $('#loading').hide();
 
+      /*
       setTimeout(function() {
         var newpos = new THREE.Vector3(10, 10, 10);
         console.log('tweeniningigng');
@@ -274,16 +282,38 @@ $(function() {
             })
             .start();
       }, 2000);
+      */
     });
   }
 
+  function updateFovDescription() {
+    if (!bounding_cube) return;
+    var dist = Number.MAX_VALUE;
+    for (var i=0; i < bounding_cube.vertices.length; i++) {
+      dist = Math.min(dist, camera.position.distanceTo(bounding_cube.vertices[i]));
+    }
+
+    var vFOV = camera.fov * Math.PI / 180;        // convert vertical fov to radians
+    var height = 2 * Math.tan( vFOV / 2 ) * dist; // visible height
+
+    var aspect = $(window).width() / $(window).height();
+    var width = height * aspect;
+    var width_adjusted = Math.floor(width * 1e9/2500);
+    var height_adjusted = Math.floor(height * 1e9/2500);
+
+    $('#fov_desc').html(dist + '<br>' + numberWithCommas(width_adjusted) + ' x ' + numberWithCommas(height_adjusted) + ' light years');
+  }
+
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   // animation loop
-  var lastTwinkle = +new Date();
   function animate() {
     if (uniforms) {
-      uniforms.camPosX.value = cam.position.x;
-      uniforms.camPosY.value = cam.position.y;
-      uniforms.camPosZ.value = cam.position.z;
+      uniforms.camPosX.value = camera.position.x;
+      uniforms.camPosY.value = camera.position.y;
+      uniforms.camPosZ.value = camera.position.z;
 
       //cam.position.z = 3000 * Math.abs(Math.sin(now * 0.00001));
     }
@@ -291,6 +321,7 @@ $(function() {
     render();
     requestAnimFrame(animate);
     TWEEN.update();
+    updateFovDescription();
   }
 
   // render the scene

@@ -10,8 +10,6 @@
   <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
 
 <script type="x-vertex-shader" id="vertex-shader">
-  #define TWINKLE_PERIOD 1000.
-  #define TWINKLE_PROB 400000.
   #define e 2.71828182846
 
   uniform float camPosX;
@@ -30,12 +28,10 @@
   varying float vR;
   varying float vG;
   varying float vB;
-  varying float vRand;
   varying float vDist;
 
   void main() {
     vBrightness = brightness;
-    //vColor = color;
     vR = r;
     vG = g;
     vB = b;
@@ -125,6 +121,9 @@
   <div id="sidebar">
     <p>
     <a href="/">&laquo; Main site</a>
+    </p>
+    <p>
+    <span id="fov_desc"></span>
     </p>
 </div>
 
