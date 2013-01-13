@@ -288,6 +288,27 @@ $(function() {
       scene.add(particle_system);
 
       $('#loading').hide();
+
+      setTimeout(function() {
+        var newpos = new THREE.Vector3(10,10,10);
+        console.log('tweeniningigng');
+        var pos = camera.position;
+        new TWEEN.Tween(pos).to( {
+                x: newpos.x,
+                y: newpos.y,
+                z: newpos.z}, 8000)
+            .easing( TWEEN.Easing.Sinusoidal.InOut)
+            .onUpdate(function() {
+              /*
+              camera.position.x = pos.x;
+              camera.position.y = pos.y;
+              camera.position.z = pos.z;
+              */
+              camera.position = pos;
+              camera.updateProjectionMatrix();
+            })
+            .start();
+      }, 2000);
     });
   }
 
@@ -319,6 +340,7 @@ $(function() {
 
     render();
     requestAnimFrame(animate);
+    TWEEN.update();
   }
 
   // render the scene

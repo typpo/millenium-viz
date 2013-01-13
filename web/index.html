@@ -85,7 +85,7 @@
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = clamp(s, 5., 50.);
+    gl_PointSize = clamp(s, 8., 50.);
   }
 
 </script>
@@ -221,6 +221,7 @@
   <script src="vendor/three.min.js"></script>
   <script src="vendor/OrbitControls.js"></script>
   <script src="vendor/three.js/Detector.js"></script>
+  <script src="vendor/Tween.js"></script>
   <!--<script src="vendor/three.js/Stats.js"></script>-->
   <!--<script src="../js/lib/jquery.min.js"></script>-->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
