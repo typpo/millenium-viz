@@ -266,6 +266,8 @@ $(function() {
 
       $('#loading').hide();
 
+      StartMovie();
+
       /*
       setTimeout(function() {
         var newpos = new THREE.Vector3(10, 10, 10);
