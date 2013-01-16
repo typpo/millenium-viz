@@ -14,7 +14,7 @@
     this.time = time;
   }
 
-  function PlayMovie(frames) {
+  function PlayMovie(frames, completedCallback) {
     var tweens = [];
     for (var i=0; i < frames.length; i++) {
       var frame = frames[i];
@@ -30,12 +30,12 @@
       var tween = new TWEEN.Tween(tweenargs).to({
             position_x: frame.position.x,
             position_y: frame.position.y,
-            position_zz: frame.position.z,
+            position_z: frame.position.z,
             rotation_x: frame.rotation.x,
             rotation_y: frame.rotation.y,
             rotation_z: frame.rotation.z,
             fov: frame.fov
-          }, 8000)
+          }, frame.time)
           .easing( TWEEN.Easing.Sinusoidal.InOut)
           .onUpdate(function() {
             camera.position.set(tweenargs.position_x, tweenargs.position_y,
@@ -59,20 +59,33 @@
       // TODO update delay, delay, and such
       prev = prev.chain(tween);
     }
+
+    // set up completion callback
+    tweens[tweens.length-1].onComplete(function() {
+      completedCallback();
+    });
+
+    // prev is the first tween now
     prev.start();
+
   }
 
   window.StartMovie = function() {
     frames = [
       new MovieEvent(
-          new THREE.Vector3(10, 10, 10),  // position
-          new THREE.Vector3(0, 0, 0),     // rotation
-          75,   // fov
+          //new THREE.Vector3(-100.298, -134.766, 447.004),  // position
+          //new THREE.Vector3(0.2948709375011, -0.211489709708253, 0.06366940495736546),     // rotation
+          new THREE.Vector3(-389.42, -891.5953, -1420.21459),  // position
+          new THREE.Vector3(2.5839369989874, -0.206877525252764, 3.0141779097761026),     // rotation
+          50,   // fov
           'test text',
           10000
       )
     ];
 
-    PlayMovie(frames);
+    PlayMovie(frames, function() {
+      // completed
+      alert('ok');
+    });
   }
 })(window);

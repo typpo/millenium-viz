@@ -79,8 +79,8 @@ $(function() {
     //cameraControls.maxDistance = 1100;
     cameraControls.maxDistance = 2100;
     */
-    cameraControls = new THREE.OrbitControls(camera);
-    //cameraControls.autoRotateSpeed = 0.2;
+    window.cc = cameraControls = new THREE.OrbitControls(camera);
+    cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
 
