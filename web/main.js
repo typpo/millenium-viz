@@ -14,7 +14,6 @@ $(function() {
 
   var WEB_GL_ENABLED = true;
   var SPREAD_FACTOR = 10;
-  var WIDTH_PER_PIXEL = 2500 / 1e9;  // in light years per pixel
 
   var stats, scene, renderer, composer, projector;
   var camera, cameraControls;
