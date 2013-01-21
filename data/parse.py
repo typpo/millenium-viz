@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # pulls xyz coords from all galaxy data
+# NOTE fullbox is the latest one - up to coords 250, 250, 250
 
 import csv
 import sys
@@ -30,7 +31,11 @@ with open(sys.argv[1], 'r') as datafile:
 
   c = 0
   for row in reader:
-    f_x = float(row['x'])
+    try:
+      f_x = float(row['x'])
+    except:
+      print 'Bad x value:', row['x']
+      continue
     f_y = float(row['y'])
     f_z = float(row['z'])
     normalized_x = doround(f_x * SPREAD_FACTOR)
@@ -69,7 +74,7 @@ for key in dedup.keys():
   vy = key[1]
   vz = key[2]
   new_buckets = []
-  for n in range(1, 3):
+  for n in range(1, 10):
     i = n * ROUNDING_AMOUNT
     trybucket(new_buckets, vx + i, vy, vz)
     trybucket(new_buckets, vx - i, vy, vz)

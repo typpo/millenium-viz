@@ -130,7 +130,7 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/testout2.json';
+    var path = '../data/testout3_fewer.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -167,6 +167,7 @@ $(function() {
           , y = (this[1]-125) * SPREAD_FACTOR
           , z = (this[2]-125) * SPREAD_FACTOR
         ;
+
         var pos = new THREE.Vector3(x,y,z);
         attributes.pos.value[idx] = pos;
 
