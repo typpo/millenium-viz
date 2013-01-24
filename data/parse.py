@@ -61,7 +61,7 @@ for key in dedup.keys():
     print c, '(', adjusted_count, ')', '...'
 
   val = dedup[key]
-  if len(val) > 1:
+  if len(val) > 3:
     continue
 
   # put lonely ones into nearby buckets
@@ -74,7 +74,7 @@ for key in dedup.keys():
   vy = key[1]
   vz = key[2]
   new_buckets = []
-  for n in range(1, 10):
+  for n in range(1, 50):
     i = n * ROUNDING_AMOUNT
     trybucket(new_buckets, vx + i, vy, vz)
     trybucket(new_buckets, vx - i, vy, vz)

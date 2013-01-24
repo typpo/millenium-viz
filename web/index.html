@@ -42,11 +42,11 @@
     vDist = sqrt(xs*xs + ys*ys + zs*zs);
 
     // TODO smaller size if no nearby
-    float s = size * 10./(1.+pow(e, 0.0020*(vDist-300.)));
+    float s = size * 1./(1.+pow(e, 0.0020*(vDist-1000.)));
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = clamp(s, 8.5, 50.);
+    gl_PointSize = clamp(s, 4.5, 45.);
   }
 
 </script>
@@ -76,7 +76,10 @@
       vec3 luma = vec3( 0.299, 0.587, 0.114 );
       float v = dot( texel.xyz, luma );
       //gl_FragColor = vec4( v, v, v, texel.w );
-      gl_FragColor = vec4(vR, vG, vB, texel.w );
+      float alpha = texel.w;
+      if (vDist < 600. || vDist > 3000.)
+        discard;
+      gl_FragColor = vec4(vR, vG, vB, alpha);
 /*
       vec4 sum = vec4( 0.0 );
       float v = 1./512.;
