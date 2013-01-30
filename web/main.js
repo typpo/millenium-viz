@@ -275,32 +275,37 @@ $(function() {
                                                      particle_material);
       scene.add(particle_system);
 
-      window.bounding_cube = bounding_cube = new THREE.CubeGeometry(1250, 1250, 1250);
-      //scene.add(bounding_cube);
+      window.bounding_cube = bounding_cube = new THREE.CubeGeometry(2500, 2500, 2500);
+var cube = new THREE.Mesh(
+    bounding_cube,
+    new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } )
+);
+      scene.add(cube);
 
       var renderModel = new THREE.RenderPass( scene, camera );
       renderModel.clear = false;
       //THREE.BloomPass.blurX = new THREE.Vector2( 0.000000001953125, 0.0 );
       //THREE.BloomPass.blurY = new THREE.Vector2( 0.000000001953125, 0.0 );
-      var effectBloom = new THREE.BloomPass(1, 25, 4, 256);
+      //var effectBloom = new THREE.BloomPass(1, 25, 4, 256);
 
-var hblur = new THREE.ShaderPass( THREE.HorizontalTiltShiftShader );
-        var vblur = new THREE.ShaderPass( THREE.VerticalTiltShiftShader );
+      // tilt shift blur
+      var hblur = new THREE.ShaderPass( THREE.HorizontalTiltShiftShader );
+      var vblur = new THREE.ShaderPass( THREE.VerticalTiltShiftShader );
 
-        var bluriness = 4;
+      var bluriness = 4;
 
-        hblur.uniforms[ 'h' ].value = bluriness / window.innerWidth;
-        vblur.uniforms[ 'v' ].value = bluriness / window.innerHeight;
+      hblur.uniforms[ 'h' ].value = bluriness / window.innerWidth;
+      vblur.uniforms[ 'v' ].value = bluriness / window.innerHeight;
 
-        hblur.uniforms[ 'r' ].value = vblur.uniforms[ 'r' ].value = 0.5;
+      hblur.uniforms[ 'r' ].value = vblur.uniforms[ 'r' ].value = 0.5;
 
       composer = new THREE.EffectComposer( renderer, renderTarget );
-              var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
-                      effectCopy.renderToScreen = true;
+      var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
+      effectCopy.renderToScreen = true;
       composer.addPass( renderModel );
       //composer.addPass( effectBloom );
-composer.addPass( hblur );
-        composer.addPass( vblur );
+      composer.addPass( hblur );
+      composer.addPass( vblur );
       composer.addPass( effectCopy );
 
 
