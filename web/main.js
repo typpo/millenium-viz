@@ -15,7 +15,7 @@ $(function() {
   var WEB_GL_ENABLED = true;
   var SPREAD_FACTOR = 10;
 
-  var stats, scene, renderer, composer, projector;
+  var stats, scene, renderer, composer, renderTarget, projector;
   var camera, cameraControls;
   var pi = Math.PI;
   var using_webgl = false;
@@ -43,6 +43,13 @@ $(function() {
       if (typeof mixpanel !== 'undefined') mixpanel.track('not supported');
     }
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBFormat,
+      stencilBuffer: false
+    });
+
     document.getElementById('container').appendChild(renderer.domElement);
 
     // Set up stats
@@ -78,8 +85,9 @@ $(function() {
     //cameraControls.maxDistance = 1100;
     cameraControls.maxDistance = 2100;
     */
-    window.cc = cameraControls = new THREE.OrbitControls(camera);
-    cameraControls.autoRotateSpeed = 0.2;
+    //window.cc = cameraControls = new THREE.OrbitControls(camera);
+    window.cc = cameraControls = new THREE.TrackballControls(camera);
+    //cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
 
@@ -139,7 +147,8 @@ $(function() {
         r: {type: 'f', value: []},
         g: {type: 'f', value: []},
         b: {type: 'f', value: []},
-        pos: { type: "v3", value: []}
+        pos: { type: "v3", value: []},
+        show: { type: "f", value: []}
       };
       uniforms = {
         map: { type: "t", value: THREE.ImageUtils.loadTexture("images/cloud4.png") },
@@ -166,6 +175,8 @@ $(function() {
           , y = (this[1]-125) * SPREAD_FACTOR
           , z = (this[2]-125) * SPREAD_FACTOR
         ;
+
+        attributes.show.value[idx] = Math.random() > .7 ? 1. : 0.; // randomly determine whether to show
 
         var pos = new THREE.Vector3(x,y,z);
         attributes.pos.value[idx] = pos;
@@ -243,6 +254,11 @@ $(function() {
       particle_material.depthTest = false;
       particle_material.vertexColor = true;
       particle_material.transparent = true;
+      /*
+      particle_material.blendSrc = 'SrcAlphaFactor';
+      particle_material.blendDst = 'DstAlphaFactor';
+      particle_material.blendEquation = THREE.AddEquation;
+      */
       particle_material.blending = THREE.AdditiveBlending;
 
       /*
@@ -262,7 +278,31 @@ $(function() {
       window.bounding_cube = bounding_cube = new THREE.CubeGeometry(1250, 1250, 1250);
       //scene.add(bounding_cube);
 
-      projector = new THREE.Projector();
+      var renderModel = new THREE.RenderPass( scene, camera );
+      renderModel.clear = false;
+      //THREE.BloomPass.blurX = new THREE.Vector2( 0.000000001953125, 0.0 );
+      //THREE.BloomPass.blurY = new THREE.Vector2( 0.000000001953125, 0.0 );
+      var effectBloom = new THREE.BloomPass(1, 25, 4, 256);
+
+var hblur = new THREE.ShaderPass( THREE.HorizontalTiltShiftShader );
+        var vblur = new THREE.ShaderPass( THREE.VerticalTiltShiftShader );
+
+        var bluriness = 4;
+
+        hblur.uniforms[ 'h' ].value = bluriness / window.innerWidth;
+        vblur.uniforms[ 'v' ].value = bluriness / window.innerHeight;
+
+        hblur.uniforms[ 'r' ].value = vblur.uniforms[ 'r' ].value = 0.5;
+
+      composer = new THREE.EffectComposer( renderer, renderTarget );
+              var effectCopy = new THREE.ShaderPass( THREE.CopyShader );
+                      effectCopy.renderToScreen = true;
+      composer.addPass( renderModel );
+      //composer.addPass( effectBloom );
+composer.addPass( hblur );
+        composer.addPass( vblur );
+      composer.addPass( effectCopy );
+
 
       $('#loading').hide();
 
@@ -332,6 +372,7 @@ $(function() {
     cameraControls.update();
     // actually render the scene
     renderer.render(scene, camera);
+    if (composer) composer.render(0.1);
   }
 
   init();
