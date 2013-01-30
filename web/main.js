@@ -276,11 +276,13 @@ $(function() {
       scene.add(particle_system);
 
       window.bounding_cube = bounding_cube = new THREE.CubeGeometry(2500, 2500, 2500);
-var cube = new THREE.Mesh(
-    bounding_cube,
-    new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } )
-);
+/*
+      var cube = new THREE.Mesh(
+          bounding_cube,
+          new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } )
+      );
       scene.add(cube);
+*/
 
       var renderModel = new THREE.RenderPass( scene, camera );
       renderModel.clear = false;
