@@ -18,7 +18,7 @@ OUTPUT = sys.argv[2]
 print 'Output to', OUTPUT
 
 SPREAD_FACTOR = 30
-ROUNDING_AMOUNT = 35   # number of pixels to round
+ROUNDING_AMOUNT = 30   # number of pixels to round
 dedup = {}
 
 # build index and squash dataset
@@ -52,6 +52,7 @@ with open(sys.argv[1], 'r') as datafile:
     if n > 0 and c > n:
       break
 
+print len(dedup.keys()), 'galaxy buckets in first rounded pass'
 print 'Adjusting lonely galaxy buckets...'
 c = 0
 adjusted_count = 0
@@ -74,7 +75,7 @@ for key in dedup.keys():
   vy = key[1]
   vz = key[2]
   new_buckets = []
-  for n in range(1, 50):
+  for n in range(1, 100):
     i = n * ROUNDING_AMOUNT
     trybucket(new_buckets, vx + i, vy, vz)
     trybucket(new_buckets, vx - i, vy, vz)
@@ -98,7 +99,7 @@ for key in dedup.keys():
   if len(new_buckets) > 1:
     dedup[random.choice(new_buckets)].append(val[0])
     adjusted_count += 1
-  del dedup[key]
+    del dedup[key]
 
 print adjusted_count, 'lonely galaxies re-sorted into nearby buckets'
 
@@ -138,7 +139,6 @@ for key, val in dedup.iteritems():
       'sfr': sfr,
     })
   else:
-    """
     blobs.append({
       'x': val[0][0],
       'y': val[0][1],
@@ -146,8 +146,6 @@ for key, val in dedup.iteritems():
       'diskRadius': val[0][3],
       'sfr': val[0][4],
     })
-    """
-    pass
 
   c += 1
   if c % 50000 == 0:
