@@ -5,6 +5,8 @@
 import csv
 import sys
 import random
+from rtree import index
+from math import sqrt
 
 if len(sys.argv) < 3:
   print 'usage: parse data.csv output.json [# galaxies]'
@@ -18,13 +20,21 @@ OUTPUT = sys.argv[2]
 print 'Output to', OUTPUT
 
 SPREAD_FACTOR = 30
-ROUNDING_AMOUNT = 30   # number of pixels to round
+ROUNDING_AMOUNT = 45   # number of units to round
 dedup = {}
+
+props = index.Property()
+props.dimension = 3
+idx = index.Index('3d_index', properties=props)
 
 # build index and squash dataset
 print 'Indexing...'
 def doround(x, base=ROUNDING_AMOUNT):
   return int(base * round(float(x)/base))
+
+id_to_obj = {}
+id_to_key = {}
+next_id = 0
 
 with open(sys.argv[1], 'r') as datafile:
   reader = csv.DictReader(datafile)
@@ -44,7 +54,13 @@ with open(sys.argv[1], 'r') as datafile:
     triple = (normalized_x, normalized_y, normalized_z)
 
     dedup.setdefault(triple, [])
-    dedup[triple].append((f_x, f_y, f_z, float(row['diskRadius']), float(row['sfr'])))
+    obj = (f_x, f_y, f_z, float(row['diskRadius']), float(row['sfr']))
+    dedup[triple].append(obj)
+
+    idx.insert(next_id, (normalized_x, normalized_y, normalized_z, normalized_x, normalized_y, normalized_z))
+    id_to_obj[next_id] = obj
+    id_to_key[next_id] = triple
+    next_id += 1
 
     c += 1
     if c % 50000 == 0:
@@ -62,8 +78,26 @@ for key in dedup.keys():
     print c, '(', adjusted_count, ')', '...'
 
   val = dedup[key]
-  if len(val) > 3:
+  if len(val) > 10:
     continue
+
+  vx = key[0]
+  vy = key[1]
+  vz = key[2]
+
+  nearest_id = list(idx.nearest((vx, vy, vz, vx, vy, vz), 1))[0]
+  nearest_obj = id_to_obj[nearest_id]
+  nearest_key = id_to_key[nearest_id]
+
+  dist = sqrt((nearest_key[0] - vx)**2 + (nearest_key[1] - vy)**2 + (nearest_key[2] - vz)**2)
+  if dist > SPREAD_FACTOR * ROUNDING_AMOUNT * 10: # in units, not pixels
+    continue
+
+  adjusted_count += 1
+  dedup[key].extend(val)
+  del dedup[key]
+
+  continue
 
   # put lonely ones into nearby buckets
   def trybucket(tries, x, y, z):
@@ -71,11 +105,8 @@ for key in dedup.keys():
     if coord in dedup and len(dedup[coord]) > 1:
       tries.append(coord)
 
-  vx = key[0]
-  vy = key[1]
-  vz = key[2]
   new_buckets = []
-  for n in range(1, 100):
+  for n in range(1, 80):
     i = n * ROUNDING_AMOUNT
     trybucket(new_buckets, vx + i, vy, vz)
     trybucket(new_buckets, vx - i, vy, vz)

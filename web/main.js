@@ -137,7 +137,7 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/testout6_idk.json';
+    var path = '../data/testout10_idk.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
