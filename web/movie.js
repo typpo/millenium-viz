@@ -37,6 +37,9 @@
             fov: frame.fov
           }, frame.time)
           .easing( TWEEN.Easing.Sinusoidal.InOut)
+          .onStart(function() {
+            $('#main-caption').html(frame.text);
+          })
           .onUpdate(function() {
             camera.position.set(tweenargs.position_x, tweenargs.position_y,
               tweenargs.position_z);
@@ -78,7 +81,12 @@
           new THREE.Vector3(-389.42, -891.5953, -1420.21459),  // position
           new THREE.Vector3(2.5839369989874, -0.206877525252764, 3.0141779097761026),     // rotation
           50,   // fov
-          'test text',
+          "This is part of the <a href=\"http://www.mpa-garching.mpg.de/galform/virgo/millennium/\">Millenium Run</a>, the largest n-body supercomputer simulation ever."
+          + "<br><br>In a cube of space 2 billion light years wide, it traced the evolution of over 10 billion pieces of dark matter, each a billion times the mass of our sun, roughly equivalent to 20 million galaxies."
+          + "<br><br>In this view, our entire galaxy is smaller than a single point."
+          + "<br><br>You're looking at a billion cubic light-years of space -- unthinkably huge, but just a tiny part of the universe."
+
+          ,
           10000
       )
     ];
