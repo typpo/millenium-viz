@@ -22,20 +22,19 @@
   attribute float g;
   attribute float b;
 
-  attribute float show;
-
   attribute vec3 pos;
+  attribute float show;
 
   varying float vR;
   varying float vG;
   varying float vB;
   varying float vDist;
-  varying vec2 vUv;
+  //varying vec2 vUv;
 
   varying float vShow;
 
   void main() {
-    vUv = uv;
+    //vUv = uv;
     vR = r;
     vG = g;
     vB = b;
