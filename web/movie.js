@@ -87,7 +87,7 @@
           + "<br><br>In this view, our entire galaxy is smaller than a single point."
 
           ,
-          30000
+          10000
       )
     ];
 

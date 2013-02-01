@@ -10,11 +10,13 @@
   <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
 
 <script type="x-vertex-shader" id="vertex-shader">
-  #define e 2.71828182846
+  //#define e 2.71828182846
 
+/*
   uniform float camPosX;
   uniform float camPosY;
   uniform float camPosZ;
+ */
 
   attribute float brightness;
   attribute float size;
@@ -23,27 +25,29 @@
   attribute float b;
 
   attribute vec3 pos;
-  attribute float show;
+  //attribute float show;
 
   varying float vR;
   varying float vG;
   varying float vB;
-  varying float vDist;
+  //varying float vDist;
   //varying vec2 vUv;
 
-  varying float vShow;
+  //varying float vShow;
 
   void main() {
     //vUv = uv;
     vR = r;
     vG = g;
     vB = b;
-    vShow = show;
+    //vShow = show;
 
+    /*
     float xs = pos[0] - camPosX;
     float ys = pos[1] - camPosY;
     float zs = pos[2] - camPosZ;
     vDist = sqrt(xs*xs + ys*ys + zs*zs);
+*/
 
     //float s = 20./(1.+pow(e, 0.0020*(vDist-1000.)));
     //50./(1.+pow(e, 0.020*(vDist-1300.)));
@@ -61,9 +65,9 @@
   varying float vR;
   varying float vG;
   varying float vB;
-  varying float vDist;
+  //varying float vDist;
 
-  varying float vShow;
+  //varying float vShow;
 
   //varying vec2 vUv;
 

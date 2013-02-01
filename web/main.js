@@ -147,8 +147,8 @@ $(function() {
         r: {type: 'f', value: []},
         g: {type: 'f', value: []},
         b: {type: 'f', value: []},
-        pos: { type: "v3", value: []},
-        show: { type: "f", value: []}
+        pos: { type: "v3", value: []}
+        //show: { type: "f", value: []}
       };
       uniforms = {
         map: { type: "t", value: THREE.ImageUtils.loadTexture("images/cloud4.png") },
@@ -160,9 +160,11 @@ $(function() {
         map_irreg1: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/irreg1.jpg") },
         map_irreg2: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/irreg2.jpg") },
         */
+        /*
         camPosX: { type: "f", value: 1.0 },
         camPosY: { type: "f", value: 1.0 },
         camPosZ: { type: "f", value: 1.0 }
+        */
       };
 
       var maxsize = Number.MAX_VALUE;
@@ -176,7 +178,7 @@ $(function() {
           , z = (this[2]-125) * SPREAD_FACTOR
         ;
 
-        attributes.show.value[idx] = Math.random() > .7 ? 1. : 0.; // randomly determine whether to show
+        //attributes.show.value[idx] = Math.random() > .7 ? 1. : 0.; // randomly determine whether to show
 
         var pos = new THREE.Vector3(x,y,z);
         attributes.pos.value[idx] = pos;
@@ -360,9 +362,11 @@ $(function() {
   // animation loop
   function animate() {
     if (uniforms) {
+      /*
       uniforms.camPosX.value = camera.position.x;
       uniforms.camPosY.value = camera.position.y;
       uniforms.camPosZ.value = camera.position.z;
+      */
 
       //cam.position.z = 3000 * Math.abs(Math.sin(now * 0.00001));
     }
