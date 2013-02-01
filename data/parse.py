@@ -20,7 +20,7 @@ OUTPUT = sys.argv[2]
 print 'Output to', OUTPUT
 
 SPREAD_FACTOR = 30
-ROUNDING_AMOUNT = 45   # number of units to round
+ROUNDING_AMOUNT = 25   # number of units to round
 dedup = {}
 
 props = index.Property()
@@ -32,7 +32,7 @@ print 'Indexing...'
 def doround(x, base=ROUNDING_AMOUNT):
   return int(base * round(float(x)/base))
 
-id_to_obj = {}
+#id_to_obj = {}
 id_to_key = {}
 next_id = 0
 
@@ -58,7 +58,7 @@ with open(sys.argv[1], 'r') as datafile:
     dedup[triple].append(obj)
 
     idx.insert(next_id, (normalized_x, normalized_y, normalized_z, normalized_x, normalized_y, normalized_z))
-    id_to_obj[next_id] = obj
+    #id_to_obj[next_id] = obj
     id_to_key[next_id] = triple
     next_id += 1
 
@@ -86,11 +86,11 @@ for key in dedup.keys():
   vz = key[2]
 
   nearest_id = list(idx.nearest((vx, vy, vz, vx, vy, vz), 1))[0]
-  nearest_obj = id_to_obj[nearest_id]
+  #nearest_obj = id_to_obj[nearest_id]
   nearest_key = id_to_key[nearest_id]
 
   dist = sqrt((nearest_key[0] - vx)**2 + (nearest_key[1] - vy)**2 + (nearest_key[2] - vz)**2)
-  if dist > SPREAD_FACTOR * ROUNDING_AMOUNT * 10: # in units, not pixels
+  if dist > SPREAD_FACTOR * ROUNDING_AMOUNT / 2: # in pixels
     continue
 
   adjusted_count += 1
