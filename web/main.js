@@ -374,7 +374,7 @@ $(function() {
     render();
     requestAnimFrame(animate);
     TWEEN.update();
-    updateFovDescription();
+    //updateFovDescription();
   }
 
   // render the scene

@@ -7,7 +7,7 @@
 		<link  href="main.css" rel="stylesheet"/>
 	</head>
 <body>
-  <noscript>Sorry, this page requires Canvas/WebGL, so you'll need to enable JavaScript.</noscript>
+  <noscript>Sorry, this page requires WebGL, so you'll need to enable JavaScript.</noscript>
 
 <script type="x-vertex-shader" id="vertex-shader">
   //#define e 2.71828182846
@@ -178,12 +178,6 @@
     <p>
     <a href="/">&laquo; Main site</a>
     </p>
-    <p>
-    <span id="fov_desc"></span>
-    </p>
-    <hr/>
-    <div id="subtitles">
-    </div>
   </div>
 	<!-- three.js container -->
   <div id="container"></div>
@@ -206,6 +200,7 @@
 	<div id="info">
     <div id="caption-container">
       <div id="main-caption-container" class="top">
+        <span id="main-caption-close">&times;</span>
         <p id="main-caption">
         </p>
       </div>
@@ -217,8 +212,7 @@
       <strong>Rotate</strong>: left click + drag; <strong>Pan</strong>: right click + drag
       <br>
       <strong>Zoom</strong>: scroll/middle click + drag; <strong>Fullscreen</strong>: press f
-      <br>
-      The location of all objects shown is scientifically accurate.</span>
+      </span>
 		</div>
 	</div>
   <script src="vendor/three.min.js"></script>
