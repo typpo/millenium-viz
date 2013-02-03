@@ -88,28 +88,21 @@
         + "<br><br>You're looking at a billion cubic light-years of space -- unthinkably huge, but just a tiny part of the universe."
         + "<br><br>&nbsp;<a href=\"#\">&raquo; Continue</a>"
         ,
-        8000
+        11000
       ),
       MovieEvent(
         new THREE.Vector3(-189.42, -691.5953, -1220.21459),  // position
         new THREE.Vector3(-2.785340500011829, 0.12534666496470587, 2.5639590637178085),     // rotation
         80,   // fov
         null,
-        8000
+        10000
       ),
       MovieEvent(
         new THREE.Vector3(-189.42, -691.5953, -1220.21459),  // position
         new THREE.Vector3(-2.785340500011829, 0.12534666496470587, 2.5639590637178085),     // rotation
         40,   // fov
         null,
-        8000
-      ),
-      MovieEvent(
-        new THREE.Vector3(-96.1029589, 606.00058341, -1310.9945263),  // position
-        new THREE.Vector3(-2.7085993236847865, -0.0664423697701746, -2.3178260010390517),     // rotation
-        40,   // fov
-        null,
-        8000
+        10000
       ),
       MovieEvent(
         new THREE.Vector3(-96.1029589, 606.00058341, -1310.9945263),  // position
