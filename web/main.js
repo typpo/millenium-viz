@@ -137,7 +137,7 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/testout10_idk.json';
+    var path = '../data/small10.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -256,17 +256,12 @@ $(function() {
       particle_material.depthTest = false;
       particle_material.vertexColor = true;
       particle_material.transparent = true;
-      /*
-      particle_material.blendSrc = 'SrcAlphaFactor';
-      particle_material.blendDst = 'DstAlphaFactor';
-      particle_material.blendEquation = THREE.AddEquation;
-      */
       particle_material.blending = THREE.AdditiveBlending;
 
       /*
-      particle_material =  new THREE.ParticleBasicMaterial({
+      var particle_material =  new THREE.ParticleBasicMaterial({
         color: 0xFFFFFF,
-        size: 10,
+        size: 50,
         map: THREE.ImageUtils.loadTexture('images/cloud4.png'),
         transparent: true,
         depthTest: false
@@ -275,6 +270,8 @@ $(function() {
 
       var particle_system = new THREE.ParticleSystem(particles,
                                                      particle_material);
+      particle_system.frustumCulled = true;
+      particle_system.sortParticles = false;
       scene.add(particle_system);
 
       window.bounding_cube = bounding_cube = new THREE.CubeGeometry(2500, 2500, 2500);
@@ -383,7 +380,7 @@ $(function() {
     cameraControls.update();
     // actually render the scene
     renderer.render(scene, camera);
-    if (composer) composer.render(0.1);
+    //if (composer) composer.render(0.1);
   }
 
   init();
