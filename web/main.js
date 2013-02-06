@@ -67,7 +67,7 @@ $(function() {
     var cameraH	= 3;
     var cameraW	= cameraH / window.innerHeight * window.innerWidth;
     window.camera = camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(1592, 600, 983)
+    camera.position.set(592, 600, 983)
     //camera.position.set(3750, 3750, 3750);
     //camera.rotation.set(-0.548, 0.9945, 0.5078);
     camera.center = new THREE.Vector3(0,0,0);
