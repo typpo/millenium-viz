@@ -137,7 +137,7 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/small10.json';
+    var path = '../data/testout10_idk.json';
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
@@ -370,7 +370,7 @@ $(function() {
 
     render();
     requestAnimFrame(animate);
-    TWEEN.update();
+    //TWEEN.update();
     //updateFovDescription();
   }
 
