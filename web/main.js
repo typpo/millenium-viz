@@ -91,40 +91,6 @@ $(function() {
 
     // Rendering stuff
 
-    // Sky
-    if (false && using_webgl) {
-      $('#loading-text').html('skybox');
-      var path = "images/s_";
-      var format = '.jpg';
-      var urls = [
-          path + 'px' + format, path + 'nx' + format,
-          path + 'py' + format, path + 'ny' + format,
-          path + 'pz' + format, path + 'nz' + format
-        ];
-        /*
-      var urls = [];
-      for (var i=0; i < 6; i++) {
-        urls.push('images/universe.jpg');
-      }
-      */
-      var reflectionCube = THREE.ImageUtils.loadTextureCube( urls );
-      reflectionCube.format = THREE.RGBFormat;
-
-      var shader = THREE.ShaderUtils.lib[ "cube" ];
-      shader.uniforms[ "tCube" ].value = reflectionCube;
-
-      var material = new THREE.ShaderMaterial( {
-        fragmentShader: shader.fragmentShader,
-        vertexShader: shader.vertexShader,
-        uniforms: shader.uniforms,
-        depthWrite: false,
-        side: THREE.BackSide
-      } );
-
-      mesh = new THREE.Mesh( new THREE.CubeGeometry( 6000, 6000, 6000 ), material );
-      scene.add(mesh);
-    }
-
     $('#container').on('mousedown', function() {
       camera_fly_around = false;
     });
@@ -132,7 +98,6 @@ $(function() {
     window.renderer = renderer;
 
     load();
-
     animate();
   }
 
@@ -313,24 +278,6 @@ $(function() {
       $('#loading').hide();
 
       StartMovie();
-
-      /*
-      setTimeout(function() {
-        var newpos = new THREE.Vector3(10, 10, 10);
-        console.log('tweeniningigng');
-        var pos = camera.position;
-        new TWEEN.Tween(pos).to( {
-                x: newpos.x,
-                y: newpos.y,
-                z: newpos.z}, 8000)
-            .easing( TWEEN.Easing.Sinusoidal.InOut)
-            .onUpdate(function() {
-              camera.position = pos;
-              camera.updateProjectionMatrix();
-            })
-            .start();
-      }, 2000);
-      */
     });
   }
 
@@ -358,15 +305,15 @@ $(function() {
 
   // animation loop
   function animate() {
-    if (uniforms) {
       /*
+    if (uniforms) {
       uniforms.camPosX.value = camera.position.x;
       uniforms.camPosY.value = camera.position.y;
       uniforms.camPosZ.value = camera.position.z;
-      */
 
       //cam.position.z = 3000 * Math.abs(Math.sin(now * 0.00001));
     }
+      */
 
     render();
     requestAnimFrame(animate);

@@ -57,6 +57,7 @@ with open(sys.argv[1], 'r') as datafile:
     obj = (f_x, f_y, f_z, float(row['diskRadius']), float(row['sfr']))
     dedup[triple].append(obj)
 
+    #print (next_id, (normalized_x, normalized_y, normalized_z, normalized_x, normalized_y, normalized_z))
     idx.insert(next_id, (normalized_x, normalized_y, normalized_z, normalized_x, normalized_y, normalized_z))
     #id_to_obj[next_id] = obj
     id_to_key[next_id] = triple
@@ -91,10 +92,10 @@ for key in dedup.keys():
 
   dist = sqrt((nearest_key[0] - vx)**2 + (nearest_key[1] - vy)**2 + (nearest_key[2] - vz)**2)
   if dist > SPREAD_FACTOR * ROUNDING_AMOUNT / 2: # in pixels
+    # don't join it with nearest
     continue
 
   adjusted_count += 1
-  #dedup[key].extend(val)
   dedup[nearest_key].extend(val)
   del dedup[key]
 
