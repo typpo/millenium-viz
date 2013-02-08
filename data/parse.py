@@ -78,8 +78,8 @@ for key in dedup.keys():
     print c, '(', adjusted_count, ')', '...'
 
   val = dedup[key]
-  if len(val) > 10:
-    continue
+  #if len(val) > 10:
+  #  continue
 
   vx = key[0]
   vy = key[1]
@@ -94,7 +94,8 @@ for key in dedup.keys():
     continue
 
   adjusted_count += 1
-  dedup[key].extend(val)
+  #dedup[key].extend(val)
+  dedup[nearest_key].extend(val)
   del dedup[key]
 
   continue
