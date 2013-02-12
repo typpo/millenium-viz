@@ -22,6 +22,10 @@ $(function() {
   var camera_fly_around = true;
   var object_movement_on = true;
 
+  var fps_counter = new FpsCounter();
+
+  window.fps = fps_counter;
+
   var bounding_cube;
 
   var uniforms, attributes;
@@ -315,12 +319,17 @@ $(function() {
     }
       */
 
-    var now = +new Date();
+    //var now = +new Date();
     //camera.position.z = 2200 * Math.abs(Math.sin(now * 0.0001));
+
+    fps_counter.tick();
 
     render();
     requestAnimFrame(animate);
-    //TWEEN.update();
+    if (fps_counter.getFps() > 20) {
+      TWEEN.update();
+    }
+    $('#main-caption').html(fps_counter.getFps().toFixed(1));
     //updateFovDescription();
   }
 
@@ -330,7 +339,9 @@ $(function() {
     cameraControls.update();
     // actually render the scene
     renderer.render(scene, camera);
-    //if (composer) composer.render(0.1);
+    if (fps_counter.getFps() > 30 && composer) {
+      composer.render(0.1);
+    }
   }
 
   init();
