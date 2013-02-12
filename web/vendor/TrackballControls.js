@@ -165,7 +165,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 			var factor = _touchZoomDistanceStart / _touchZoomDistanceEnd;
 			_touchZoomDistanceStart = _touchZoomDistanceEnd;
-			_eye.multiplyScalar( factor );
+			_eye.multiplyScalar( factor/30 );
 
 		} else {
 
@@ -405,6 +405,8 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 		}
 
+    sign = delta < 0 ? -1 : 1;
+    delta = sign * Math.min(Math.abs(delta), 1.);
 		_zoomStart.y += ( 1 / delta ) * 0.05;
 
 	}

@@ -87,6 +87,7 @@ $(function() {
     */
     //window.cc = cameraControls = new THREE.OrbitControls(camera);
     window.cc = cameraControls = new THREE.TrackballControls(camera);
+    cameraControls.maxDistance = 3150;
     //cameraControls.autoRotateSpeed = 0.2;
 
     // Rendering stuff
@@ -311,9 +312,11 @@ $(function() {
       uniforms.camPosY.value = camera.position.y;
       uniforms.camPosZ.value = camera.position.z;
 
-      //cam.position.z = 3000 * Math.abs(Math.sin(now * 0.00001));
     }
       */
+
+    var now = +new Date();
+    //camera.position.z = 2200 * Math.abs(Math.sin(now * 0.0001));
 
     render();
     requestAnimFrame(animate);
