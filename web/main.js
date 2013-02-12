@@ -13,7 +13,7 @@ $(function() {
   })();
 
   var WEB_GL_ENABLED = true;
-  var SPREAD_FACTOR = 15;
+  var SPREAD_FACTOR = 13;
 
   var stats, scene, renderer, composer, renderTarget, projector;
   var camera, cameraControls;
