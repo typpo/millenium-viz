@@ -113,10 +113,14 @@
       ),
     ];
 
+    /*
     PlayMovie(frames, function() {
       // completed
       console.log('tweens done');
     });
+    */
+    console.log('asdasd');
+    $('#main-caption').html(frames[0].text);
 
     $('#main-caption-close').on('click', function() {
       $('#main-caption-container').hide();

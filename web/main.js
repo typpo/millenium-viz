@@ -282,7 +282,7 @@ $(function() {
 
       $('#loading').hide();
 
-      //StartMovie();
+      StartMovie();
     });
   }
 
@@ -325,9 +325,11 @@ $(function() {
     fps_counter.tick();
 
     render();
+    /*
     if (fps_counter.getFps() > 20) {
       TWEEN.update();
     }
+    */
     //updateFovDescription();
     requestAnimFrame(animate);
   }
