@@ -86,7 +86,7 @@
         + "<br><br>In a cube of space 2 billion light years wide, it traces the evolution of over 10 billion pieces of dark matter, each a billion times the mass of our sun, roughly equivalent to 20 million galaxies."
         + "<br><br>In this view, our entire galaxy is smaller than a single point."
         + "<br><br>You're looking at a billion cubic light-years of space -- unthinkably huge, but just a tiny part of the universe."
-        + "<br><br>&nbsp;<a href=\"#\">&raquo; Continue</a>"
+        + '<br><br>&nbsp;<a href="#" class="js-close-dialog">&raquo; Continue</a>'
         ,
         11000
       ),
@@ -122,8 +122,9 @@
     console.log('asdasd');
     $('#main-caption').html(frames[0].text);
 
-    $('#main-caption-close').on('click', function() {
+    $('#main-caption-close, #main-caption a.js-close-dialog').on('click', function() {
       $('#main-caption-container').hide();
+      return false;
     });
   }
 })(window);
