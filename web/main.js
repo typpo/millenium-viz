@@ -107,7 +107,13 @@ $(function() {
   }
 
   function load() {
-    var path = '../data/testout10_idk.json';
+    var path;
+    if (getParameterByName('big') == '1') {
+      path = '../data/testout2.json';
+    }
+    else {
+      path = '../data/testout10_idk.json';
+    }
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
 
