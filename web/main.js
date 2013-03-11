@@ -89,10 +89,11 @@ $(function() {
     //cameraControls.maxDistance = 1100;
     cameraControls.maxDistance = 2100;
     */
-    //window.cc = cameraControls = new THREE.OrbitControls(camera);
-    window.cc = cameraControls = new THREE.TrackballControls(camera);
-    cameraControls.maxDistance = 3150;
-    //cameraControls.autoRotateSpeed = 0.2;
+    window.cc = cameraControls = new THREE.OrbitControls(camera);
+    //window.cc = cameraControls = new THREE.TrackballControls(camera);
+    cameraControls.maxDistance = 3000;
+    cameraControls.autoRotate = true;
+    cameraControls.autoRotateSpeed = 0.8;
 
     // Rendering stuff
 
@@ -127,7 +128,7 @@ $(function() {
         //show: { type: "f", value: []}
       };
       uniforms = {
-        map: { type: "t", value: THREE.ImageUtils.loadTexture("images/cloud4.png") },
+        map: { type: "t", value: THREE.ImageUtils.loadTexture("web/images/cloud4.png") },
       /*
         map_ellip1: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/elliptical1.jpg") },
         map_ellip2: { type: "t", value: THREE.ImageUtils.loadTexture("images/galaxy_maps/elliptical2.jpg") },
@@ -325,8 +326,10 @@ $(function() {
     }
       */
 
-    //var now = +new Date();
-    //camera.position.z = 2200 * Math.abs(Math.sin(now * 0.0001));
+    /*
+    var now = +new Date();
+    camera.position.z = 2200 * Math.abs(Math.sin(now * 0.00001));
+    */
 
     fps_counter.tick();
 
@@ -351,6 +354,16 @@ $(function() {
     }
   }
 
+  /*
+  $('#container').on('mousedown', function() {
+    console.log('asdasd');
+    cameraControls.autoRotate = false;
+  });
+  $('window').on('scroll', function() {
+    console.log('bbb');
+    cameraControls.autoRotate = false;
+  });
+  */
   init();
 });
 
