@@ -110,10 +110,10 @@ $(function() {
   function load() {
     var path;
     if (getParameterByName('big') == '1') {
-      path = '../data/testout2.json';
+      path = 'data/testout2.json';
     }
     else {
-      path = '../data/testout10_idk.json';
+      path = 'data/testout10_idk.json';
     }
     $.getJSON(path, function(data) {
       var particles = new THREE.Geometry();
