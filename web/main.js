@@ -92,8 +92,8 @@ $(function() {
     window.cc = cameraControls = new THREE.OrbitControls(camera);
     //window.cc = cameraControls = new THREE.TrackballControls(camera);
     cameraControls.maxDistance = 3000;
-    cameraControls.autoRotate = true;
-    cameraControls.autoRotateSpeed = 0.8;
+    cameraControls.autoRotate = false;
+    cameraControls.autoRotateSpeed = 0.6;
 
     // Rendering stuff
 
@@ -349,8 +349,11 @@ $(function() {
     cameraControls.update();
     // actually render the scene
     renderer.render(scene, camera);
-    if (fps_counter.getFps() > 30 && composer) {
-      composer.render(0.1);
+    if (fps_counter.getFps() > 30) {
+      cameraControls.autoRotate = true;
+      if (composer) {
+        composer.render(0.1);
+      }
     }
   }
 
