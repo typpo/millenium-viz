@@ -91,7 +91,7 @@ $(function() {
     */
     window.cc = cameraControls = new THREE.OrbitControls(camera);
     //window.cc = cameraControls = new THREE.TrackballControls(camera);
-    cameraControls.maxDistance = 3000;
+    cameraControls.maxDistance = 2700;
     cameraControls.autoRotate = true;
     cameraControls.autoRotateSpeed = 0.8;
 
@@ -354,16 +354,14 @@ $(function() {
     }
   }
 
-  /*
   $('#container').on('mousedown', function() {
-    console.log('asdasd');
-    cameraControls.autoRotate = false;
+    // cameraControls.autoRotate = false;
+    cameraControls.autoRotateSpeed = 0.2;
   });
-  $('window').on('scroll', function() {
-    console.log('bbb');
-    cameraControls.autoRotate = false;
+  $('window').scroll(function() {
+    //cameraControls.autoRotate = false;
+    cameraControls.autoRotateSpeed = 0.2;
   });
-  */
   init();
 });
 
